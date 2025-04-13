@@ -1,0 +1,84 @@
+/* Quick Checkout Popup Admin Styles - v1 (Tabs UI) */
+
+/* --- Tab Navigation --- */
+.qcp-nav-tab-wrapper {
+    margin-bottom: 20px;
+    /* Uses standard WP nav-tab styles by default */
+}
+/* Ensure active tab is clearly indicated */
+.qcp-nav-tab-wrapper .nav-tab-active,
+.qcp-nav-tab-wrapper .nav-tab-active:hover {
+    background-color: #f0f0f1; /* WP standard active tab background */
+    border-bottom-color: #f0f0f1;
+}
+
+/* --- Tab Content --- */
+.qcp-tab-content-wrapper {
+    /* Add some padding or margin if needed */
+}
+.qcp-tab-content {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-top: none; /* Top border handled by nav wrapper */
+    padding: 20px;
+    margin-bottom: 20px; /* Space before save button */
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+}
+/* Hide inactive tabs by default (JS will show the active one) */
+.qcp-tab-content {
+    display: none;
+}
+/* Style the first tab content to show by default if JS fails, but JS will override */
+/* .qcp-tab-content:first-of-type { display: block; } */ /* Better handled by JS */
+
+.qcp-tab-content h3 { /* Optional: style titles inside tabs */
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.qcp-tab-content .form-table {
+    margin-top: 0; /* Remove default top margin inside tabs */
+}
+
+/* --- Field Requirements Table (copied from previous) --- */
+.qcp-fields-table {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 5px;
+    /* border: 1px solid #c3c4c7; */ /* Already applied via .widefat */
+}
+
+.qcp-fields-table th,
+.qcp-fields-table td {
+    padding: 10px 12px;
+    vertical-align: middle;
+}
+
+.qcp-fields-table th.qcp-field-label-col {
+     padding-left: 12px;
+}
+.qcp-fields-table th.qcp-field-required-col {
+    width: 100px;
+    text-align: center;
+}
+
+.qcp-fields-table td.qcp-field-required-col {
+    text-align: center;
+}
+
+.qcp-fields-table td label {
+    display: inline;
+    margin: 0;
+    font-weight: normal;
+}
+
+/* --- General --- */
+.qcp-settings-form .form-table th {
+    width: 200px; /* Adjust label column width if needed */
+}
+.qcp-settings-form .description {
+    color: #646970; /* Standard WP description color */
+}

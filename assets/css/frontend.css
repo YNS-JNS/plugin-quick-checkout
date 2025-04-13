@@ -1,0 +1,958 @@
+/**
+ * Quick Checkout Popup Frontend Styles V1 (Modern UI/UX)
+ * Version: 1.0.2 - Fixed success button hover rotation
+ */
+
+/* --- Base Variables --- */
+:root {
+  /* ... (variables inchangées) ... */
+  --qcp-overlay-bg: rgba(0, 0, 0, 0.75);
+  --qcp-popup-bg: #ffffff;
+  --qcp-popup-max-width: 620px;
+  --qcp-popup-border-radius: 10px;
+  --qcp-primary-color: #0073e6;
+  --qcp-primary-color-dark: #005bb5;
+  --qcp-text-color: #3c434a;
+  --qcp-text-light: #646970;
+  --qcp-border-color: #dcdcde;
+  --qcp-border-light: #e7e7e7;
+  --qcp-success-color: #00a32a;
+  --qcp-error-color: #d63638;
+  --qcp-button-text-color: #fff;
+  --qcp-font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu,
+    Cantarell, 'Helvetica Neue', sans-serif;
+  --qcp-input-bg: #fff;
+  --qcp-input-border: #8c8f94;
+  --qcp-input-focus-border: var(--qcp-primary-color);
+  --qcp-input-focus-shadow: 0 0 0 1px var(--qcp-primary-color);
+  --qcp-section-bg: #f6f7f7;
+}
+
+/* --- General & Base --- */
+#qcp-popup-overlay *,
+#qcp-popup-overlay *::before,
+#qcp-popup-overlay *::after {
+  box-sizing: border-box;
+}
+#qcp-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--qcp-overlay-bg);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+  font-family: var(--qcp-font-main);
+  font-size: 14px;
+  color: var(--qcp-text-color);
+  /* LTR par défaut */
+  direction: ltr;
+  text-align: left;
+}
+#qcp-popup-overlay:not(.qcp-popup-hidden) {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+#qcp-popup-wrap {
+  background-color: var(--qcp-popup-bg);
+  border-radius: var(--qcp-popup-border-radius);
+  max-width: var(--qcp-popup-max-width);
+  width: 100%;
+  position: relative;
+  z-index: 100001;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+  text-align: left; /* LTR par défaut */
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.98) translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#qcp-popup-overlay:not(.qcp-popup-hidden) #qcp-popup-wrap {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) translateY(0);
+  transition-delay: 0s;
+}
+.qcp-popup-close {
+  /* Style de base pour TOUS les boutons de fermeture */
+  position: absolute;
+  top: 12px;
+  right: 12px; /* LTR par défaut */
+  left: auto; /* LTR par défaut */
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: #999;
+  padding: 5px;
+  font-weight: 300;
+  z-index: 10;
+  transition: color 0.2s ease, transform 0.2s ease;
+  border-radius: 50%;
+}
+/* *** CHANGEMENT ICI : Hover spécifique pour le bouton 'X' (sans classe .qcp-button) *** */
+.qcp-popup-close:not(.qcp-button):hover {
+  color: #333;
+  transform: rotate(90deg); /* Applique la rotation seulement ici */
+}
+
+/* --- View Handling & Transitions --- */
+.qcp-popup-view {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 25px 30px;
+  display: none;
+}
+.qcp-popup-view.qcp-view-active {
+  display: block;
+  animation: qcp-fadein 0.2s ease forwards;
+}
+@keyframes qcp-fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.qcp-checkout-view,
+.qcp-variation-view {
+  padding: 20px 30px 30px 30px;
+}
+.qcp-success-view {
+  padding: 40px 30px;
+  text-align: center;
+}
+.qcp-loading-view {
+  padding: 50px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+}
+/* Scrollbar Styling */
+.qcp-popup-view::-webkit-scrollbar {
+  width: 5px;
+}
+.qcp-popup-view::-webkit-scrollbar-track {
+  background: transparent;
+}
+.qcp-popup-view::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+.qcp-popup-view::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+.qcp-popup-view {
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+}
+
+/* --- Section Styling --- */
+.qcp-section {
+  margin-bottom: 25px;
+  padding-bottom: 25px;
+}
+.qcp-section:last-of-type {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.qcp-section-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+  padding-bottom: 8px;
+  color: var(--qcp-text-color);
+}
+
+.qcp-section-title-coupon {
+  border-top: 1px solid var(--qcp-border-light);
+  padding-top: 25px;
+}
+
+/* --- Product Details --- */
+.qcp-product-details {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.qcp-product-image-wrap {
+  flex: 0 0 70px;
+}
+.qcp-product-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--qcp-border-color);
+}
+.qcp-product-info {
+  flex: 1;
+  min-width: 0;
+}
+.qcp-product-name {
+  margin: 0 0 5px 0;
+  font-size: 1.05em;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.qcp-product-price {
+  font-size: 1.05em;
+  font-weight: 600;
+  color: var(--qcp-primary-color);
+  min-height: 1.2em;
+}
+.qcp-product-price del {
+  color: var(--qcp-text-light);
+  font-weight: normal;
+  opacity: 0.8;
+  margin-right: 5px; /* LTR */
+  margin-left: 0; /* LTR */
+}
+.qcp-product-price ins {
+  text-decoration: none;
+}
+.qcp-stock-status {
+  font-size: 0.9em;
+  margin-top: 5px;
+  font-weight: 500;
+  min-height: 1.1em;
+}
+.qcp-stock-status.in-stock {
+  color: var(--qcp-success-color);
+}
+.qcp-stock-status.out-of-stock {
+  color: var(--qcp-error-color);
+}
+
+/* --- Modern Quantity Input (Aligned) --- */
+.qcp-quantity-wrap.quantity {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.qcp-quantity-wrap .qcp-qty-btn {
+  background-color: #f0f0f1;
+  border: 1px solid var(--qcp-border-color);
+  color: var(--qcp-text-light);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  user-select: none;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.qcp-quantity-wrap .qcp-qty-btn:hover {
+  background-color: #e7e7e7;
+  border-color: #c1c1c1;
+  color: var(--qcp-text-color);
+}
+.qcp-quantity-wrap .qcp-qty-btn:active {
+  background-color: #ddd;
+}
+.qcp-quantity-wrap .qcp-qty-btn.qcp-qty-minus {
+  /* Bouton - à gauche en LTR */
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none; /* LTR */
+}
+.qcp-quantity-wrap .qcp-qty-btn.qcp-qty-plus {
+  /* Bouton + à droite en LTR */
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none; /* LTR */
+}
+.qcp-quantity-wrap .qcp-qty-input {
+  width: 45px;
+  height: 32px;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid var(--qcp-input-border);
+  border-left: none; /* LTR */
+  border-right: none; /* LTR */
+  border-radius: 0;
+  font-size: 1em;
+  font-weight: 500;
+  color: var(--qcp-text-color);
+  background: var(--qcp-input-bg);
+  box-shadow: none !important;
+  outline: none !important;
+  -moz-appearance: textfield;
+  margin: 0;
+  flex-shrink: 0;
+}
+.qcp-quantity-wrap .qcp-qty-input::-webkit-outer-spin-button,
+.qcp-quantity-wrap .qcp-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* --- Form Fields --- */
+.qcp-form-fields .form-row {
+  margin-bottom: 16px;
+  padding: 0;
+  position: relative;
+}
+.qcp-form-fields label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 0.9em;
+  color: var(--qcp-text-color);
+}
+.qcp-form-fields .required {
+  color: var(--qcp-error-color);
+  font-weight: normal;
+  text-decoration: none;
+  margin-left: 1px; /* LTR */
+  margin-right: 0; /* LTR */
+}
+.qcp-form-fields .input-text,
+.qcp-form-fields textarea.input-text {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--qcp-input-border);
+  border-radius: 5px;
+  font-size: 1em;
+  line-height: 1.5;
+  color: var(--qcp-text-color);
+  background-color: var(--qcp-input-bg);
+  box-shadow: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.qcp-form-fields textarea.input-text {
+  min-height: 70px;
+  line-height: 1.6;
+}
+.qcp-form-fields .input-text:focus,
+.qcp-form-fields textarea.input-text:focus {
+  border-color: var(--qcp-input-focus-border);
+  outline: 0;
+  box-shadow: var(--qcp-input-focus-shadow);
+}
+.qcp-form-fields .input-text.qcp-input-error,
+.qcp-form-fields textarea.input-text.qcp-input-error {
+  border-color: var(--qcp-error-color);
+  box-shadow: 0 0 0 1px var(--qcp-error-color);
+}
+.qcp-field-error-message {
+  display: none;
+  font-size: 0.85em;
+  color: var(--qcp-error-color);
+  margin-top: 4px;
+}
+.form-row .qcp-input-error ~ .qcp-field-error-message,
+.woocommerce-input-wrapper .qcp-input-error ~ .qcp-field-error-message {
+  display: block;
+}
+
+/* --- Variation Selection --- */
+.qcp-variation-options .variations {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.qcp-variation-options .variation {
+}
+.qcp-variation-options .label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.qcp-variation-options .value select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--qcp-input-border);
+  border-radius: 5px;
+  font-size: 1em;
+  line-height: 1.5;
+  color: var(--qcp-text-color);
+  background-color: var(--qcp-input-bg);
+  box-shadow: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23666' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center; /* LTR */
+  background-size: 10px;
+  cursor: pointer;
+  padding-right: 30px; /* LTR Espace pour flèche */
+  padding-left: 12px; /* LTR */
+}
+.qcp-variation-options .reset_variations {
+  font-size: 0.85em;
+  margin-top: 10px;
+  color: var(--qcp-primary-color);
+  cursor: pointer;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.qcp-select-variation-button {
+  margin-top: 20px;
+}
+
+/* --- Coupon Section --- */
+.qcp-coupon-section {
+  margin-top: 20px;
+  padding-top: 20px;
+}
+.qcp-coupon-title {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.qcp-coupon-form {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.qcp-coupon-input {
+  flex-grow: 1;
+  margin-bottom: 0;
+  min-width: 100px;
+}
+.qcp-coupon-form .button {
+  padding: 9px 15px;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+.qcp-remove-coupon-button {
+  background-color: #f1f1f1;
+  border-color: #d1d1d1;
+  color: #555;
+}
+.qcp-remove-coupon-button:hover {
+  background-color: #e8e8e8;
+  border-color: #c8c8c8;
+}
+
+/* --- Message/Error Display --- */
+.qcp-form-messages {
+  margin: 15px 0 10px 0;
+}
+.qcp-form-messages .woocommerce-message,
+.qcp-form-messages .woocommerce-error,
+.qcp-global-errors ul {
+  padding: 12px 15px;
+  margin: 0;
+  border-radius: 5px;
+  font-size: 0.95em;
+  list-style: none;
+  border: 1px solid transparent;
+}
+.qcp-form-messages .woocommerce-error,
+.qcp-global-errors ul {
+  background-color: #fef0f0;
+  border-color: var(--qcp-error-color);
+  color: var(--qcp-error-color);
+}
+.qcp-form-messages .woocommerce-message {
+  background-color: #f0f8ff;
+  border-color: #b3d9ff;
+  color: #005a9c;
+}
+.qcp-form-messages .woocommerce-message--success {
+  background-color: #edfaef;
+  border-color: var(--qcp-success-color);
+  color: #006f1e;
+}
+.qcp-global-errors ul li {
+  margin-bottom: 5px;
+}
+.qcp-global-errors ul li:last-child {
+  margin-bottom: 0;
+}
+
+/* --- Info Section (Shipping/Payment) --- */
+.qcp-info-box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--qcp-section-bg);
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 1px solid var(--qcp-border-light);
+  margin-top: 15px;
+}
+.qcp-info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  color: var(--qcp-text-light);
+}
+.qcp-info-icon {
+  font-size: 1.3em;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+/* --- General Button Styling --- */
+.qcp-button,
+#qcp-popup-wrap .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 22px;
+  font-size: 1em;
+  font-weight: 500;
+  line-height: 1.4;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease,
+    box-shadow 0.2s ease, opacity 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.qcp-button.alt,
+.qcp-button.qcp-submit-button {
+  background-color: var(--qcp-primary-color);
+  border-color: var(--qcp-primary-color);
+  color: var(--qcp-button-text-color);
+}
+.qcp-button.alt:hover,
+.qcp-button.qcp-submit-button:hover {
+  background-color: var(--qcp-primary-color-dark);
+  border-color: var(--qcp-primary-color-dark);
+  color: var(--qcp-button-text-color);
+}
+.qcp-button:disabled,
+#qcp-popup-wrap .button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background-color: #d1d1d1 !important;
+  border-color: #d1d1d1 !important;
+  color: #777 !important;
+}
+/* Button Text Visibility Fix */
+.qcp-button,
+.qcp-buy-now-button {
+  text-indent: 0 !important;
+  color: inherit;
+}
+.qcp-button .qcp-button-text,
+.qcp-buy-now-button {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-block !important;
+  transition: opacity 0.1s ease;
+}
+
+/* --- Modern Button Spinner (Replaces Text) --- */
+.qcp-button .qcp-button-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 50%;
+  border-color: rgba(255, 255, 255, 0.3);
+  border-top-color: var(--qcp-button-text-color);
+  animation: qcp-spin 0.8s linear infinite;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.1s ease 0.1s, visibility 0s linear 0.2s;
+}
+.qcp-button.qcp-button--loading .qcp-button-text {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition-delay: 0s !important;
+}
+.qcp-button.qcp-button--loading .qcp-button-spinner {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition-delay: 0.1s !important;
+}
+/* Coupon spinner colors */
+.qcp-coupon-form .button .qcp-button-spinner {
+  width: 14px;
+  height: 14px;
+  border-top-color: var(--qcp-primary-color);
+  border-color: rgba(0, 0, 0, 0.1);
+  border-top-color: var(--qcp-primary-color);
+}
+.qcp-remove-coupon-button .qcp-button-spinner {
+  border-top-color: #555;
+}
+
+/* --- Submit Section --- */
+.qcp-submit-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--qcp-border-light);
+}
+.qcp-submit-button {
+  width: 100%;
+}
+
+/* --- Success View --- */
+.qcp-success-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.qcp-success-content {
+  text-align: center;
+}
+.qcp-success-icon-wrap {
+  margin-bottom: 25px;
+}
+.qcp-success-icon {
+  width: 70px;
+  height: 70px;
+  display: block;
+  margin: 0 auto;
+}
+.qcp-success-icon--circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2.5;
+  stroke-miterlimit: 10;
+  stroke: var(--qcp-success-color);
+  fill: none;
+  animation: qcp-stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+.qcp-success-icon--check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  stroke-width: 3;
+  stroke: var(--qcp-success-color);
+  fill: none;
+  animation: qcp-stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.7s forwards;
+}
+@keyframes qcp-stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+.qcp-success-title {
+  font-size: 1.5em;
+  color: var(--qcp-text-color);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.qcp-success-text {
+  font-size: 1em;
+  line-height: 1.6;
+  color: var(--qcp-text-light);
+  margin-bottom: 30px;
+}
+/* Style spécifique pour le bouton de fermeture succès */
+.qcp-success-close-button {
+  /* Hérite de .qcp-button */
+  background-color: transparent;
+  border-color: var(--qcp-border-color);
+  color: var(--qcp-text-color);
+  position: static; /* Override absolute positioning from .qcp-popup-close */
+  font-size: 1em; /* Override font-size from .qcp-popup-close */
+  font-weight: 500; /* Override font-weight from .qcp-popup-close */
+  padding: 10px 18px; /* Ensure consistent padding */
+  border-radius: 6px; /* Ensure consistent radius */
+  margin-top: 15px; /* Add some space */
+}
+.qcp-success-close-button:hover {
+  background-color: #f6f7f7;
+  border-color: #c1c1c1;
+  color: var(--qcp-text-color);
+  /* Pas de transform: rotate() ici */
+}
+
+/* --- Loading Spinners (Non-button & Processing Overlay) --- */
+@keyframes qcp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.qcp-loading-spinner-wrap .qcp-spinner, /* Initial loading view */
+.qcp-processing-spinner-wrap .qcp-spinner {
+  /* Processing overlay */
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--qcp-primary-color);
+  animation: qcp-spin 1s linear infinite;
+  display: block;
+  margin: 0 auto 15px auto;
+}
+
+/* Processing Overlay Styles */
+.qcp-processing-overlay {
+  position: absolute;
+  inset: 0; /* Cover the entire parent (#qcp-popup-wrap) */
+  background-color: rgba(255, 255, 255, 0.85); /* White overlay, slightly transparent */
+  z-index: 20; /* Above the views, below the close button */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; /* Stack spinner and text */
+  border-radius: var(--qcp-popup-border-radius); /* Match parent rounding */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+.qcp-processing-overlay.qcp-visible {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.qcp-processing-spinner-wrap {
+  text-align: center;
+}
+.qcp-processing-spinner-wrap .qcp-spinner {
+  border-top-color: var(--qcp-primary-color); /* Adjust color if needed */
+  width: 35px;
+  height: 35px;
+  border-width: 3px;
+  margin-bottom: 10px;
+}
+.qcp-processing-text {
+  font-size: 0.95em;
+  color: var(--qcp-text-light);
+  font-weight: 500;
+}
+
+/* --- Body class --- */
+body.qcp-popup-is-open {
+  overflow: hidden;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 650px) {
+  /* ... (styles LTR inchangés) ... */
+  .qcp-popup-view {
+    padding: 20px 20px;
+  }
+  .qcp-product-details {
+    gap: 15px;
+  }
+  .qcp-product-image-wrap {
+    flex: 0 0 60px;
+  }
+  .qcp-product-name {
+    font-size: 1em;
+  }
+  .qcp-product-price {
+    font-size: 1em;
+  }
+  .qcp-quantity-wrap.quantity {
+    margin-top: 15px;
+    width: auto;
+    justify-content: center;
+  }
+  .qcp-quantity-wrap .qcp-qty-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+  .qcp-quantity-wrap .qcp-qty-input {
+    width: 45px;
+    height: 34px;
+    font-size: 1em;
+    margin: 0;
+  }
+  .qcp-section-title {
+    font-size: 1.05em;
+    margin-bottom: 12px;
+  }
+  .qcp-form-fields .form-row {
+    margin-bottom: 14px;
+  }
+  .qcp-form-fields label {
+    font-size: 0.9em;
+    margin-bottom: 5px;
+  }
+  .qcp-form-fields .input-text,
+  .qcp-form-fields textarea.input-text {
+    padding: 8px 10px;
+    font-size: 0.95em;
+  }
+  .qcp-coupon-form {
+    flex-wrap: wrap;
+  }
+  .qcp-coupon-input {
+    flex-basis: 100%;
+    margin-bottom: 8px;
+  }
+  .qcp-coupon-form .button {
+    flex-grow: 1;
+    font-size: 0.9em;
+  }
+  .qcp-info-box {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start; /* Align items left in LTR mobile */
+    text-align: left; /* LTR */
+    padding: 10px 12px;
+  }
+  .qcp-info-item {
+    font-size: 0.85em;
+  }
+  .qcp-button,
+  #qcp-popup-wrap .button {
+    padding: 10px 18px;
+    font-size: 0.95em;
+  }
+  .qcp-submit-section {
+    margin-top: 25px;
+    padding-top: 15px;
+  }
+  .qcp-success-view {
+    padding: 30px 20px;
+  }
+  .qcp-success-icon {
+    width: 60px;
+    height: 60px;
+  }
+  .qcp-success-title {
+    font-size: 1.3em;
+  }
+  .qcp-success-text {
+    font-size: 0.95em;
+    margin-bottom: 25px;
+  }
+  .qcp-success-close-button {
+    font-size: 0.95em; /* Mobile size */
+    padding: 10px 18px; /* Mobile padding */
+  }
+}
+@media (max-width: 400px) {
+  /* ... (styles LTR inchangés) ... */
+  .qcp-popup-view {
+    padding: 15px 15px;
+  }
+  .qcp-popup-close:not(.qcp-button) {
+    /* Affecte seulement le bouton X */
+    top: 8px;
+    right: 8px; /* LTR */
+    left: auto; /* LTR */
+    font-size: 22px;
+  }
+  .qcp-product-details {
+    align-items: flex-start;
+  }
+  .qcp-quantity-wrap.quantity {
+    margin-top: 10px;
+  }
+}
+
+/* --- RTL Styles --- */
+body.rtl #qcp-popup-overlay,
+body.rtl #qcp-popup-wrap {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Position du bouton X */
+body.rtl .qcp-popup-close:not(.qcp-button) {
+  right: auto;
+  left: 12px;
+}
+@media (max-width: 400px) {
+  body.rtl .qcp-popup-close:not(.qcp-button) {
+    left: 8px;
+    right: auto;
+  }
+}
+
+/* Inverser l'ordre image / infos */
+body.rtl .qcp-product-details {
+  flex-direction: row-reverse;
+}
+body.rtl .qcp-product-price del {
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+/* Inverser boutons quantité et ajuster rayons/bordures */
+body.rtl .qcp-quantity-wrap.quantity {
+  flex-direction: row-reverse;
+}
+body.rtl .qcp-quantity-wrap .qcp-qty-btn.qcp-qty-minus {
+  /* Devient le bouton de droite */
+  border-radius: 4px 0 0 4px;
+  border-right: 1px solid var(--qcp-border-color);
+  border-left: none;
+}
+body.rtl .qcp-quantity-wrap .qcp-qty-btn.qcp-qty-plus {
+  /* Devient le bouton de gauche */
+  border-radius: 0 4px 4px 0;
+  border-left: 1px solid var(--qcp-border-color);
+  border-right: none;
+}
+body.rtl .qcp-quantity-wrap .qcp-qty-input {
+  border-left: none;
+  border-right: none;
+}
+
+/* Champs de formulaire */
+body.rtl .qcp-form-fields .required {
+  margin-left: 0;
+  margin-right: 1px;
+}
+body.rtl .qcp-form-fields .input-text,
+body.rtl .qcp-form-fields textarea.input-text {
+  padding-left: 12px;
+  padding-right: 12px; /* Conserver padding horizontal symétrique ou ajuster */
+}
+
+/* Variation select arrow */
+body.rtl .qcp-variation-options .value select {
+  background-position: left 12px center;
+  padding-right: 12px;
+  padding-left: 30px; /* Espace pour flèche */
+}
+
+/* Coupon form */
+body.rtl .qcp-coupon-form {
+  flex-direction: row-reverse;
+}
+
+/* Info Box */
+body.rtl .qcp-info-item {
+  flex-direction: row-reverse;
+}
+
+/* Mobile Adjustments for RTL */
+@media (max-width: 650px) {
+  body.rtl .qcp-info-box {
+    align-items: flex-end; /* Align items right in RTL mobile */
+    text-align: right;
+  }
+}

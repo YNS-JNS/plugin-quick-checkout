@@ -1,0 +1,634 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Quick Checkout Popup for WooCommerce V1 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/yns-jns/plugin-quick-checkout-popup/"
+"issues\n"
+"POT-Creation-Date: 2024-07-28 10:00+0000\n"
+"PO-Revision-Date: 2025-04-11 20:48+0100\n"
+"Last-Translator: \n"
+"Language-Team: Arabic <ar@example.com>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Poedit 3.6\n"
+"X-Domain: quick-checkout-popup\n"
+
+#. translators: %s: Quick Checkout Popup for WooCommerce
+#: quick-checkout-popup.php:40
+#, php-format
+msgid ""
+"<strong>%s</strong> requires WooCommerce to be installed and activated. "
+"Please install or activate WooCommerce."
+msgstr ""
+"<strong>%s</strong> يتطلب تثبيت وتفعيل WooCommerce. يرجى تثبيت أو تفعيل "
+"WooCommerce."
+
+#: includes/class-qcp-main.php:82 includes/popup-checkout-form.php:139
+msgid "Thank you for your order! We will contact you shortly."
+msgstr "شكراً لطلبك! سوف نتصل بك قريباً."
+
+#: includes/class-qcp-main.php:84
+msgid "This field is required."
+msgstr "هذا الحقل مطلوب."
+
+#: includes/class-qcp-main.php:85
+msgid "Please enter a valid phone number."
+msgstr "يرجى إدخال رقم هاتف صحيح."
+
+#: includes/class-qcp-main.php:86
+msgid "Please enter a valid number."
+msgstr "يرجى إدخال رقم صحيح."
+
+#: includes/class-qcp-main.php:87 includes/class-qcp-ajax.php:130
+#: includes/frontend.js:26
+msgid "Quantity must be at least 1."
+msgstr "يجب أن تكون الكمية 1 على الأقل."
+
+#: includes/class-qcp-main.php:90 includes/frontend.js:37
+msgid "Error applying coupon."
+msgstr "خطأ في تطبيق الكوبون."
+
+#: includes/class-qcp-main.php:91 includes/frontend.js:38
+msgid "Coupon applied successfully."
+msgstr "تم تطبيق الكوبون بنجاح."
+
+#: includes/class-qcp-main.php:92 includes/frontend.js:39
+msgid "Coupon removed."
+msgstr "تمت إزالة الكوبون."
+
+#: includes/class-qcp-main.php:93 includes/frontend.js:40
+msgid "Please enter a coupon code."
+msgstr "يرجى إدخال رمز الكوبون."
+
+#: includes/class-qcp-main.php:94 includes/frontend.js:41
+msgid "Apply"
+msgstr "تطبيق"
+
+#: includes/class-qcp-main.php:95 includes/frontend.js:42
+msgid "Applying..."
+msgstr "جاري التطبيق..."
+
+#: includes/class-qcp-main.php:96 includes/frontend.js:43
+msgid "Remove"
+msgstr "إزالة"
+
+#: includes/class-qcp-main.php:97 includes/frontend.js:44
+msgid "Removing..."
+msgstr "جاري الإزالة..."
+
+#: includes/class-qcp-main.php:100 includes/class-qcp-ajax.php:215
+#: includes/frontend.js:28
+msgid "Please select product options."
+msgstr "يرجى تحديد خيارات المنتج."
+
+#: includes/class-qcp-main.php:101 includes/frontend.js:29
+msgid "Sorry, this combination is unavailable."
+msgstr "عذراً، هذه التشكيلة غير متوفرة."
+
+#: includes/class-qcp-main.php:102 includes/frontend.js:30
+msgid "Sorry, this combination is out of stock."
+msgstr "عذراً، هذه التشكيلة غير متوفرة في المخزون."
+
+#: includes/class-qcp-main.php:103 includes/frontend.js:31
+#: includes/popup-checkout-form.php:58
+msgid "Loading options..."
+msgstr "جاري تحميل الخيارات..."
+
+#: includes/class-qcp-main.php:104 includes/frontend.js:32
+msgid "Options loaded."
+msgstr "تم تحميل الخيارات."
+
+#: includes/class-qcp-main.php:105 includes/frontend.js:33
+#: includes/popup-checkout-form.php:60
+msgid "Select Variation"
+msgstr "اختر التشكيلة"
+
+#: includes/class-qcp-main.php:106 includes/frontend.js:34
+msgid "Proceed to Checkout"
+msgstr "المتابعة للدفع"
+
+#: includes/class-qcp-frontend.php:45
+msgid "Buy Now"
+msgstr "اشترِ الآن"
+
+#: includes/class-qcp-frontend.php:46 includes/popup-checkout-form.php:55
+#: includes/class-qcp-frontend.php:51
+msgid "Select Options"
+msgstr "اختر الخيارات"
+
+#: includes/class-qcp-frontend.php:67
+msgid "Quick Buy / Select Options"
+msgstr "شراء سريع / اختر الخيارات"
+
+#: includes/class-qcp-frontend.php:87
+msgid "This product is currently unavailable."
+msgstr "هذا المنتج غير متوفر حالياً."
+
+#: includes/class-qcp-ajax.php:73
+msgid "Security check failed."
+msgstr "فشل التحقق الأمني."
+
+#: includes/class-qcp-ajax.php:93 includes/class-qcp-admin.php:355
+msgid "Full Name"
+msgstr "الاسم الكامل"
+
+#: includes/class-qcp-ajax.php:93 includes/class-qcp-ajax.php:94
+#: includes/class-qcp-ajax.php:136 includes/class-qcp-admin.php:356
+#: includes/popup-checkout-form.php:126
+msgid "Phone Number"
+msgstr "رقم الهاتف"
+
+#: includes/class-qcp-ajax.php:93 includes/class-qcp-ajax.php:136
+#: includes/class-qcp-admin.php:357 includes/popup-checkout-form.php:126
+msgid "Town / City"
+msgstr "المدينة"
+
+#: includes/class-qcp-ajax.php:94 includes/class-qcp-ajax.php:136
+#: includes/class-qcp-admin.php:358 includes/popup-checkout-form.php:126
+msgid "Street Address"
+msgstr "عنوان الشارع"
+
+#: includes/class-qcp-ajax.php:134
+#, php-format
+msgid "%s is required."
+msgstr "%s مطلوب."
+
+#: includes/class-qcp-ajax.php:136 includes/frontend.js:25
+msgid "Invalid phone format."
+msgstr "صيغة الهاتف غير صحيحة."
+
+#: includes/class-qcp-ajax.php:141 includes/frontend.js:27
+msgid "Invalid product data received."
+msgstr "تم استلام بيانات منتج غير صالحة."
+
+#: includes/class-qcp-ajax.php:153 includes/class-qcp-ajax.php:306
+msgid "Product not found."
+msgstr "المنتج غير موجود."
+
+#: includes/class-qcp-ajax.php:156
+msgid "This product cannot be purchased at this time."
+msgstr "لا يمكن شراء هذا المنتج في الوقت الحالي."
+
+#: includes/class-qcp-ajax.php:159 includes/class-qcp-ajax.php:206
+msgid "This product is currently out of stock."
+msgstr "هذا المنتج غير متوفر حالياً في المخزون."
+
+#: includes/class-qcp-ajax.php:166 includes/frontend.js:36
+msgid "Invalid product variation selected."
+msgstr "تم تحديد تشكيلة منتج غير صالحة."
+
+#: includes/class-qcp-ajax.php:172
+msgid "Error validating product variation details."
+msgstr "خطأ في التحقق من تفاصيل تشكيلة المنتج."
+
+#: includes/class-qcp-ajax.php:178
+#, php-format
+msgid "Only %s available (variation)."
+msgstr "متوفر فقط %s (تشكيلة)."
+
+#: includes/class-qcp-ajax.php:178 includes/frontend.js:35
+msgid "Selected variation is out of stock."
+msgstr "التشكيلة المحددة غير متوفرة في المخزون."
+
+#: includes/class-qcp-ajax.php:204
+#, php-format
+msgid "Only %s available."
+msgstr "متوفر فقط %s."
+
+#: includes/class-qcp-ajax.php:211
+msgid "Please select product options first."
+msgstr "يرجى تحديد خيارات المنتج أولاً."
+
+#: includes/class-qcp-ajax.php:218
+msgid "This product type is not supported."
+msgstr "نوع المنتج هذا غير مدعوم."
+
+#: includes/class-qcp-ajax.php:235 includes/class-qcp-order.php:45
+msgid "Internal Error: Invalid product data."
+msgstr "خطأ داخلي: بيانات المنتج غير صالحة."
+
+#: includes/class-qcp-ajax.php:239 includes/class-qcp-order.php:53
+msgid "Internal Error: Invalid variation data."
+msgstr "خطأ داخلي: بيانات التشكيلة غير صالحة."
+
+#: includes/class-qcp-ajax.php:258
+msgid "Thank you! Order received."
+msgstr "شكراً لك! تم استلام الطلب."
+
+#: includes/class-qcp-ajax.php:269
+msgid "Invalid product ID."
+msgstr "معرف المنتج غير صالح."
+
+#: includes/class-qcp-ajax.php:270
+msgid "Product is not variable."
+msgstr "المنتج ليس متغيراً."
+
+#: includes/class-qcp-ajax.php:275 includes/class-qcp-ajax.php:283
+msgid "Error loading options."
+msgstr "خطأ في تحميل الخيارات."
+
+#: includes/class-qcp-ajax.php:280
+msgid "No variations available or error loading options."
+msgstr "لا توجد تشكيلات متاحة أو خطأ في تحميل الخيارات."
+
+#: includes/class-qcp-ajax.php:288 includes/class-qcp-order.php:133
+#: includes/frontend.js:228
+msgid "Coupons disabled."
+msgstr "الكوبونات معطلة."
+
+#: includes/class-qcp-ajax.php:293 includes/frontend.js:234
+msgid "Enter coupon code."
+msgstr "أدخل رمز الكوبون."
+
+#: includes/class-qcp-ajax.php:296
+msgid "Invalid or expired coupon."
+msgstr "كوبون غير صالح أو منتهي الصلاحية."
+
+#: includes/class-qcp-ajax.php:310
+msgid "Coupon not valid for product."
+msgstr "الكوبون غير صالح لهذا المنتج."
+
+#: includes/class-qcp-ajax.php:312
+#, php-format
+msgid "Min spend: %s."
+msgstr "الحد الأدنى للإنفاق: %s."
+
+#: includes/class-qcp-ajax.php:314
+#, php-format
+msgid "Max spend: %s."
+msgstr "الحد الأقصى للإنفاق: %s."
+
+#: includes/class-qcp-ajax.php:316
+msgid "Coupon not valid for sale items."
+msgstr "الكوبون غير صالح للعناصر المخفضة."
+
+#: includes/class-qcp-ajax.php:326 includes/frontend.js:241
+msgid "Coupon applied."
+msgstr "تم تطبيق الكوبون."
+
+#: includes/class-qcp-ajax.php:343 includes/class-qcp-ajax.php:355
+msgid "Invalid request."
+msgstr "طلب غير صالح."
+
+#: includes/class-qcp-admin.php:48 includes/class-qcp-admin.php:107
+msgid "Quick Checkout Settings"
+msgstr "إعدادات الدفع السريع"
+
+#: includes/class-qcp-admin.php:49 includes/class-qcp-admin.php:108
+#: popup-checkout-form.php:30
+msgid "Quick Checkout"
+msgstr "الدفع السريع"
+
+#: includes/class-qcp-admin.php:63
+msgid "Activation & Stats"
+msgstr "التفعيل والإحصائيات"
+
+#: includes/class-qcp-admin.php:64
+msgid "Form Fields"
+msgstr "حقول النموذج"
+
+#: includes/class-qcp-admin.php:65
+msgid "Order & Integrations"
+msgstr "الطلب والتكاملات"
+
+#: includes/class-qcp-admin.php:66
+msgid "Thank You"
+msgstr "الشكر"
+
+#: includes/class-qcp-admin.php:67
+msgid "Tracking"
+msgstr "التتبع"
+
+#: includes/class-qcp-admin.php:68
+msgid "Statistics View"
+msgstr "عرض الإحصائيات"
+
+#: includes/class-qcp-admin.php:97
+msgid "Enable \"Buy Now\" Button"
+msgstr "تفعيل زر \"اشترِ الآن\""
+
+#: includes/class-qcp-admin.php:97
+msgid "Replaces Add to Cart with \"Buy Now\" for simple/variable products."
+msgstr "يستبدل \"أضف إلى السلة\" بـ \"اشترِ الآن\" للمنتجات البسيطة/المتغيرة."
+
+#: includes/class-qcp-admin.php:98
+msgid "\"Buy Now\" Button Text (Simple)"
+msgstr "نص زر \"اشترِ الآن\" (بسيط)"
+
+#: includes/class-qcp-admin.php:99
+msgid "Enable Popup Checkout"
+msgstr "تفعيل نافذة الدفع المنبثقة"
+
+#: includes/class-qcp-admin.php:99
+msgid "Open checkout form in a popup on button click."
+msgstr "فتح نموذج الدفع في نافذة منبثقة عند النقر على الزر."
+
+#: includes/class-qcp-admin.php:101
+msgid "Enable Statistics Tracking"
+msgstr "تفعيل تتبع الإحصائيات"
+
+#: includes/class-qcp-admin.php:101
+msgid "Track button clicks and successful orders via popup."
+msgstr "تتبع نقرات الزر والطلبات الناجحة عبر النافذة المنبثقة."
+
+#: includes/class-qcp-admin.php:106
+msgid "Field Requirements"
+msgstr "الحقول المطلوبة"
+
+#: includes/class-qcp-admin.php:110
+msgid "Default Payment Method"
+msgstr "طريقة الدفع الافتراضية"
+
+#: includes/class-qcp-admin.php:110
+msgid "Select the payment method for Quick Checkout orders."
+msgstr "حدد طريقة الدفع لطلبات الدفع السريع."
+
+#: includes/class-qcp-admin.php:111
+msgid "Enable Google Sheets Sync"
+msgstr "تفعيل مزامنة جداول بيانات Google"
+
+#: includes/class-qcp-admin.php:112
+msgid "Google Apps Script URL"
+msgstr "عنوان URL لبرنامج Google Apps النصي"
+
+#: includes/class-qcp-admin.php:112
+msgid "Enter the Web App URL from Google Apps Script."
+msgstr "أدخل عنوان URL لتطبيق الويب من برنامج Google Apps النصي."
+
+#: includes/class-qcp-admin.php:113
+msgid "Google Sheets Secret Key"
+msgstr "المفتاح السري لجداول بيانات Google"
+
+#: includes/class-qcp-admin.php:113
+msgid "Enter a secret key matching your Apps Script."
+msgstr "أدخل مفتاحًا سريًا مطابقًا لبرنامج Apps النصي الخاص بك."
+
+#: includes/class-qcp-admin.php:117
+msgid "Confirmation Message"
+msgstr "رسالة التأكيد"
+
+#: includes/class-qcp-admin.php:121
+msgid "Google Analytics ID (GA4: G-XXXX)"
+msgstr "معرف Google Analytics (GA4: G-XXXX)"
+
+#: includes/class-qcp-admin.php:122
+msgid "Facebook Pixel ID"
+msgstr "معرف بيكسل فيسبوك"
+
+#: includes/class-qcp-admin.php:132
+msgid "You do not have sufficient permissions to access this page."
+msgstr "ليس لديك الصلاحيات الكافية للوصول إلى هذه الصفحة."
+
+#: includes/class-qcp-admin.php:181
+msgid "Save Settings"
+msgstr "حفظ الإعدادات"
+
+#: includes/class-qcp-admin.php:255
+msgid ""
+"Select which fields should be required in the popup form. Email field is "
+"currently removed."
+msgstr ""
+"حدد الحقول التي يجب أن تكون مطلوبة في النموذج المنبثق. حقل البريد الإلكتروني "
+"محذوف حاليًا."
+
+#: includes/class-qcp-admin.php:259
+msgid ""
+"View basic usage statistics for the Quick Checkout feature. Tracking must be "
+"enabled in the \"Activation & Stats\" tab."
+msgstr ""
+"عرض إحصائيات الاستخدام الأساسية لميزة الدفع السريع. يجب تفعيل التتبع في "
+"علامة التبويب \"التفعيل والإحصائيات\"."
+
+#: includes/class-qcp-admin.php:264
+msgid "Statistics tracking is currently disabled."
+msgstr "تتبع الإحصائيات معطل حاليًا."
+
+#: includes/class-qcp-admin.php:266
+msgid "Statistics module is not active or available."
+msgstr "وحدة الإحصائيات ليست نشطة أو متاحة."
+
+#: includes/class-qcp-admin.php:326
+msgid "Form Field"
+msgstr "حقل النموذج"
+
+#: includes/class-qcp-admin.php:327
+msgid "Required?"
+msgstr "مطلوب؟"
+
+#: includes/class-qcp-admin.php:355 includes/class-qcp-admin.php:363
+msgid "Name"
+msgstr "الاسم"
+
+#: includes/class-qcp-admin.php:356 includes/class-qcp-admin.php:364
+msgid "Phone"
+msgstr "الهاتف"
+
+#: includes/class-qcp-admin.php:357 includes/class-qcp-admin.php:365
+msgid "City"
+msgstr "المدينة"
+
+#: includes/class-qcp-admin.php:358 includes/class-qcp-admin.php:366
+msgid "Address"
+msgstr "العنوان"
+
+#: includes/class-qcp-admin.php:377
+msgid "No payment gateways are currently available."
+msgstr "لا توجد بوابات دفع متاحة حاليًا."
+
+#: includes/class-qcp-order.php:61
+msgid "Internal Error: Could not validate item."
+msgstr "خطأ داخلي: تعذر التحقق من العنصر."
+
+#: includes/class-qcp-order.php:64
+msgid "Item cannot be purchased."
+msgstr "لا يمكن شراء العنصر."
+
+#: includes/class-qcp-order.php:65
+msgid "Not enough stock."
+msgstr "المخزون غير كاف."
+
+#: includes/class-qcp-order.php:74
+msgid "Could not initiate order."
+msgstr "تعذر بدء الطلب."
+
+#: includes/class-qcp-order.php:97
+#, php-format
+msgid "Coupon \"%s\" could not be applied. Reason: %s"
+msgstr "تعذر تطبيق الكوبون \"%s\". السبب: %s"
+
+#: includes/class-qcp-order.php:111
+msgid "No suitable payment method available."
+msgstr "لا توجد طريقة دفع مناسبة متاحة."
+
+#: includes/class-qcp-order.php:122
+msgid "Failed to save order data."
+msgstr "فشل حفظ بيانات الطلب."
+
+#: includes/class-qcp-order.php:127
+msgid "Order via Quick Checkout."
+msgstr "طلب عبر الدفع السريع."
+
+#: includes/class-qcp-sheets.php:42
+msgid "Google Sheets Web App URL is missing or invalid."
+msgstr "عنوان URL لتطبيق ويب جداول بيانات Google مفقود أو غير صالح."
+
+#: includes/class-qcp-sheets.php:46
+msgid "Google Sheets Secret Key is not configured."
+msgstr "المفتاح السري لجداول بيانات Google غير مهيأ."
+
+#: includes/class-qcp-sheets.php:106
+msgid "Failed to prepare data for Google Sheets (JSON encode error)."
+msgstr "فشل إعداد البيانات لجداول بيانات Google (خطأ في ترميز JSON)."
+
+#: includes/class-qcp-sheets.php:126
+msgid "Could not connect to Google Sheets server: "
+msgstr "تعذر الاتصال بخادم جداول بيانات Google: "
+
+#: includes/class-qcp-sheets.php:138
+msgid "Unknown error logging to the sheet."
+msgstr "خطأ غير معروف أثناء التسجيل في الجدول."
+
+#: includes/class-qcp-sheets.php:147
+msgid "Failed to send data to Google Sheets: "
+msgstr "فشل إرسال البيانات إلى جداول بيانات Google: "
+
+#: includes/class-qcp-stats.php:71
+msgid "\"Buy Now\" Clicks Tracked"
+msgstr "نقرات \"اشترِ الآن\" المتتبعة"
+
+#: includes/class-qcp-stats.php:76
+msgid "Successful Orders via Popup"
+msgstr "الطلبات الناجحة عبر النافذة المنبثقة"
+
+#: includes/class-qcp-stats.php:81
+msgid "Conversion Rate (Clicks to Orders)"
+msgstr "معدل التحويل (النقرات إلى الطلبات)"
+
+#: includes/frontend.js:357
+msgid "Stats disabled, click not recorded"
+msgstr "الإحصائيات معطلة، لم يتم تسجيل النقرة"
+
+#: includes/frontend.js:361
+msgid "QCP Stat Track Success:"
+msgstr "QCP نجاح تتبع الإحصائيات:"
+
+#: includes/frontend.js:363
+msgid "QCP Stat Track Server Response:"
+msgstr "QCP استجابة خادم تتبع الإحصائيات:"
+
+#: includes/frontend.js:363
+msgid "No message"
+msgstr "لا توجد رسالة"
+
+#: includes/frontend.js:366
+msgid "QCP Stat Track AJAX Error:"
+msgstr "QCP خطأ AJAX تتبع الإحصائيات:"
+
+#: popup-checkout-form.php:14
+msgid "Order Placed Successfully!"
+msgstr "تم تقديم الطلب بنجاح!"
+
+#: popup-checkout-form.php:29
+msgid "Close"
+msgstr "إغلاق"
+
+#: popup-checkout-form.php:35
+msgid "Processing your order..."
+msgstr "جاري معالجة طلبك..."
+
+#: popup-checkout-form.php:43
+msgid "Loading..."
+msgstr "جاري التحميل..."
+
+#: popup-checkout-form.php:85 includes/popup-checkout-form.php:113
+#: includes/popup-checkout-form.php:116 includes/popup-checkout-form.php:149
+#: includes/popup-checkout-form.php:150
+msgid "Quantity"
+msgstr "الكمية"
+
+#: popup-checkout-form.php:86
+msgid "Decrease quantity"
+msgstr "تقليل الكمية"
+
+#: popup-checkout-form.php:88
+msgid "Increase quantity"
+msgstr "زيادة الكمية"
+
+#: popup-checkout-form.php:98
+msgid "Shipping Details"
+msgstr "تفاصيل الشحن"
+
+#: popup-checkout-form.php:125
+msgid "House number and street name"
+msgstr "رقم المنزل واسم الشارع"
+
+#: popup-checkout-form.php:141
+msgid "Apply Coupon"
+msgstr "تطبيق الكوبون"
+
+#: popup-checkout-form.php:142 includes/popup-checkout-form.php:143
+msgid "Coupon code"
+msgstr "رمز الكوبون"
+
+#: popup-checkout-form.php:154
+msgid "Free Shipping"
+msgstr "شحن مجاني"
+
+#: popup-checkout-form.php:155
+msgid "Cash on Delivery"
+msgstr "الدفع عند الاستلام"
+
+#: popup-checkout-form.php:158 includes/popup-checkout-form.php:159
+msgid "Place Order"
+msgstr "إتمام الطلب"
+
+#: popup-checkout-form.php:167
+msgid "Continue Shopping"
+msgstr "متابعة التسوق"
+
+#: includes/frontend.js:24
+msgid "Required."
+msgstr "مطلوب."
+
+#: includes/frontend.js:266
+msgid "Error: Product info missing."
+msgstr "خطأ: معلومات المنتج مفقودة."
+
+#: includes/frontend.js:297
+msgid "Error finding selected variation."
+msgstr "خطأ في العثور على التشكيلة المحددة."
+
+#: includes/frontend.js:338
+msgid "An unknown server error occurred."
+msgstr "حدث خطأ غير معروف في الخادم."
+
+#: includes/frontend.js:345
+msgid "AJAX Error ("
+msgstr "خطأ AJAX ("
+
+#: includes/frontend.js:345
+msgid "). Please try again."
+msgstr "). يرجى المحاولة مرة أخرى."
+
+#: includes/frontend.js:356
+msgid "Stats disabled or invalid ID"
+msgstr "الإحصائيات معطلة أو المعرف غير صالح"
+
+#: includes/frontend.js:359
+msgid "Stats tracking call sent"
+msgstr "تم إرسال استدعاء تتبع الإحصائيات"
+
+#: includes/popup-checkout-form.php:22 includes/class-qcp-ajax.php:134
+msgid "required"
+msgstr "مطلوب"
+
+#: includes/popup-checkout-form.php:87
+msgid "Product quantity"
+msgstr "كمية المنتج"
+
+#: includes/popup-checkout-form.php:105 includes/class-qcp-ajax.php:93
+msgid "Your Order"
+msgstr "طلبك"
