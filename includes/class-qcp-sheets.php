@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Handles sending order data to Google Sheets via Apps Script Web App.
+ * Version: 1.1.1 - Added Quantity and Unit Price columns.
  */
 class QCP_Sheets {
 
@@ -22,10 +23,9 @@ class QCP_Sheets {
 
     /**
      * Sends order data to Google Apps Script Web App using JSON format.
-     * Uses 'billingCity' key to match the existing Sheet header.
      *
      * @param \WC_Order $order The WooCommerce order object.
-     * @param array $customer_data Sanitized customer input data (name, phone, city, address).
+     * @param array $customer_data Sanitized customer input data (name, phone, city, address, quantity).
      * @return bool|\WP_Error True on success, WP_Error on failure.
      */
     public function send_order_to_sheets( $order, $customer_data ) {
@@ -34,7 +34,7 @@ class QCP_Sheets {
         $secret_key = $options['google_sheets_secret'] ?? null;
         $order_id = $order->get_id();
 
-        // --- Validation: Check URL and Secret Key ---
+        // Validation: Check URL and Secret Key
         if ( empty($webhook_url) || ! filter_var($webhook_url, FILTER_VALIDATE_URL) ) {
              error_log("QCP Sheets JSON Error (Order #{$order_id}): Webhook URL is missing or invalid.");
              return new \WP_Error('sheets_config_error', __('Google Sheets Web App URL is missing or invalid.', 'quick-checkout-popup'));
@@ -44,47 +44,52 @@ class QCP_Sheets {
               return new \WP_Error('sheets_config_error', __('Google Sheets Secret Key is not configured.', 'quick-checkout-popup'));
          }
 
-        // --- Prepare Data Payload ---
+        // Prepare Product Data from Order Items
         $product_id = '';
         $product_sku = '';
         $product_name = '';
         $item_total = 0;
+        $unit_price = 0; // *** NOUVEAU : Initialiser le prix unitaire ***
 
         $items = $order->get_items();
         if (!empty($items)) {
              $first_item = reset($items);
              if ($first_item instanceof \WC_Order_Item_Product) {
-                  $product = $first_item->get_product();
+                  $product = $first_item->get_product(); // WC_Product or WC_Product_Variation object
                   if ($product) {
                       $product_id = $product->get_id();
                       $product_sku = $product->get_sku() ?: 'N/A';
                       $product_name = $product->get_name();
+                      // *** NOUVEAU : Récupère le prix unitaire de l'objet produit ***
+                      $unit_price = $product->get_price();
                   }
-                  $item_total = $first_item->get_total();
+                  $item_total = $first_item->get_total(); // Total pour la ligne (prix * qté - réduc ligne)
              }
         }
 
-        // --- Build the Payload Array ---
-        // *** CORRECTION: Utiliser 'billingCity' pour correspondre à l'en-tête existant ***
+        // Build the Payload Array
         $payload = array(
             'secretKey'         => $secret_key,
             'orderId'           => $order_id,
             'orderDate'         => $order->get_date_created() ? $order->get_date_created()->date('Y-m-d H:i:s') : date('Y-m-d H:i:s'),
             'customerName'      => $customer_data['billing_name'] ?? $order->get_formatted_billing_full_name(),
             'customerPhone'     => $customer_data['billing_phone'] ?? $order->get_billing_phone(),
-            // *** CORRECTION ICI ***
-            'billingCity'       => $customer_data['billing_city'] ?? $order->get_billing_city(), // <-- Utilisation de 'billingCity'
+            'billingCity'       => $customer_data['billing_city'] ?? $order->get_billing_city(),
             'shippingAddress'   => $customer_data['shipping_address_1'] ?? $order->get_shipping_address_1(),
-            // 'customerEmail'      => '', // Email toujours supprimé
 
             // Product Data
             'productId'         => $product_id,
             'productSku'        => $product_sku,
             'productName'       => $product_name,
 
-            // Financial Data
-            'itemTotal'         => wc_format_decimal($item_total, wc_get_price_decimals()),
-            'orderTotal'        => wc_format_decimal($order->get_total(), wc_get_price_decimals()),
+            // Item Data
+            'quantity'          => $customer_data['quantity'] ?? 1, // Quantité du formulaire
+            // *** NOUVEAU : Ajout du prix unitaire ***
+            'unitPrice'         => wc_format_decimal($unit_price, wc_get_price_decimals()),
+            'itemTotal'         => wc_format_decimal($item_total, wc_get_price_decimals()), // Total Ligne article
+
+            // Order Totals
+            'orderTotal'        => wc_format_decimal($order->get_total(), wc_get_price_decimals()), // Total Commande
             'currency'          => $order->get_currency(),
 
             // Order Meta Data
@@ -100,7 +105,7 @@ class QCP_Sheets {
             return new \WP_Error('sheets_payload_error', __('Failed to prepare data for Google Sheets (JSON encode error).', 'quick-checkout-popup'));
         }
 
-        // --- Send Request using wp_remote_post ---
+        // Send Request using wp_remote_post
         $args = array(
             'method'      => 'POST',
             'body'        => $payload_json,
@@ -112,11 +117,11 @@ class QCP_Sheets {
             'data_format' => 'body',
         );
 
-        error_log("QCP Sheets JSON (Order #{$order_id}): Sending POST to: " . $webhook_url);
+        error_log("QCP Sheets JSON (Order #{$order_id}): Sending POST to: " . $webhook_url . " | Payload keys: " . implode(', ', array_keys($payload)));
 
         $response = wp_remote_post( $webhook_url, $args );
 
-        // --- Handle the Response ---
+        // Handle the Response
         if ( is_wp_error( $response ) ) {
             $error_message = $response->get_error_message();
             error_log("QCP Sheets JSON WP_Error (Order #{$order_id}): Request failed. Error: " . $error_message);
