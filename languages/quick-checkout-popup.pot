@@ -2,9 +2,9 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Quick Checkout Popup for WooCommerce V1 1.0.0\n"
+"Project-Id-Version: Quick Checkout Popup for WooCommerce V1 1.2.2\n" # Ajuste la version si besoin
 "Report-Msgid-Bugs-To: https://github.com/yns-jns/plugin-quick-checkout-popup/issues\n"
-"POT-Creation-Date: 2024-07-28 10:00+0000\n"
+"POT-Creation-Date: 2024-07-28 12:00:00+0000\n" # Date et heure actuelles
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,381 +13,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Loco https://localise.biz/\n"
+"X-Generator: WP-CLI 2.10.0 / Loco Translate 2.6.6\n" # Outils de génération typiques
 "X-Domain: quick-checkout-popup\n"
 
-#: quick-checkout-popup.php:40
-#, php-format
-msgid ""
-"<strong>%s</strong> requires WooCommerce to be installed and activated. "
-"Please install or activate WooCommerce."
-msgstr ""
-
-#: includes/class-qcp-main.php:82 includes/popup-checkout-form.php:139
-msgid "Thank you for your order! We will contact you shortly."
-msgstr ""
-
-#: includes/class-qcp-main.php:84
-msgid "This field is required."
-msgstr ""
-
-#: includes/class-qcp-main.php:85
-msgid "Please enter a valid phone number."
-msgstr ""
-
-#: includes/class-qcp-main.php:86
-msgid "Please enter a valid number."
-msgstr ""
-
-#: includes/class-qcp-main.php:87 includes/class-qcp-ajax.php:130
-#: includes/frontend.js:26
-msgid "Quantity must be at least 1."
-msgstr ""
-
-#: includes/class-qcp-main.php:90 includes/frontend.js:37
-msgid "Error applying coupon."
-msgstr ""
-
-#: includes/class-qcp-main.php:91 includes/frontend.js:38
-msgid "Coupon applied successfully."
-msgstr ""
-
-#: includes/class-qcp-main.php:92 includes/frontend.js:39
-msgid "Coupon removed."
-msgstr ""
-
-#: includes/class-qcp-main.php:93 includes/frontend.js:40
-msgid "Please enter a coupon code."
-msgstr ""
-
-#: includes/class-qcp-main.php:94 includes/frontend.js:41
-msgid "Apply"
-msgstr ""
-
-#: includes/class-qcp-main.php:95 includes/frontend.js:42
-msgid "Applying..."
-msgstr ""
-
-#: includes/class-qcp-main.php:96 includes/frontend.js:43
-msgid "Remove"
-msgstr ""
-
-#: includes/class-qcp-main.php:97 includes/frontend.js:44
-msgid "Removing..."
-msgstr ""
-
-#: includes/class-qcp-main.php:100 includes/class-qcp-ajax.php:215
-#: includes/frontend.js:28
-msgid "Please select product options."
-msgstr ""
-
-#: includes/class-qcp-main.php:101 includes/frontend.js:29
-msgid "Sorry, this combination is unavailable."
-msgstr ""
-
-#: includes/class-qcp-main.php:102 includes/frontend.js:30
-msgid "Sorry, this combination is out of stock."
-msgstr ""
-
-#: includes/class-qcp-main.php:103 includes/frontend.js:31
-#: includes/popup-checkout-form.php:58
-msgid "Loading options..."
-msgstr ""
-
-#: includes/class-qcp-main.php:104 includes/frontend.js:32
-msgid "Options loaded."
-msgstr ""
-
-#: includes/class-qcp-main.php:105 includes/frontend.js:33
-#: includes/popup-checkout-form.php:60
-msgid "Select Variation"
-msgstr ""
-
-#: includes/class-qcp-main.php:106 includes/frontend.js:34
-msgid "Proceed to Checkout"
-msgstr ""
-
-#: includes/class-qcp-frontend.php:45
-msgid "Buy Now"
-msgstr ""
-
-#: includes/class-qcp-frontend.php:46
-#: includes/popup-checkout-form.php:55
-msgid "Select Options"
-msgstr ""
-
-#: includes/class-qcp-frontend.php:51
-msgid "Select Options"
-msgstr ""
-
-#: includes/class-qcp-frontend.php:67
-msgid "Quick Buy / Select Options"
-msgstr ""
-
-#: includes/class-qcp-frontend.php:87
-msgid "This product is currently unavailable."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:73
-msgid "Security check failed."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:93 includes/class-qcp-admin.php:355
-msgid "Full Name"
-msgstr ""
-
-#: includes/class-qcp-ajax.php:93 includes/class-qcp-ajax.php:94
-#: includes/class-qcp-ajax.php:136 includes/class-qcp-admin.php:356
-#: includes/popup-checkout-form.php:126
-msgid "Phone Number"
-msgstr ""
-
-#: includes/class-qcp-ajax.php:93 includes/class-qcp-ajax.php:136
-#: includes/class-qcp-admin.php:357 includes/popup-checkout-form.php:126
-msgid "Town / City"
-msgstr ""
-
-#: includes/class-qcp-ajax.php:94 includes/class-qcp-ajax.php:136
-#: includes/class-qcp-admin.php:358 includes/popup-checkout-form.php:126
+#: includes/class-qcp-admin.php:358 includes/class-qcp-ajax.php:104
+#: templates/popup-checkout-form.php:158 templates/popup-checkout-form.php:161
 msgid "Street Address"
 msgstr ""
 
-#: includes/class-qcp-ajax.php:134
-#, php-format
-msgid "%s is required."
+#: includes/class-qcp-admin.php:357 includes/class-qcp-ajax.php:100
+#: templates/popup-checkout-form.php:158
+msgid "Town / City"
 msgstr ""
 
-#: includes/class-qcp-ajax.php:136 includes/frontend.js:25
-msgid "Invalid phone format."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:141 includes/frontend.js:27
-msgid "Invalid product data received."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:153 includes/class-qcp-ajax.php:306
-msgid "Product not found."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:156
-msgid "This product cannot be purchased at this time."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:159 includes/class-qcp-ajax.php:206
-msgid "This product is currently out of stock."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:166 includes/frontend.js:36
-msgid "Invalid product variation selected."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:172
-msgid "Error validating product variation details."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:178
-#, php-format
-msgid "Only %s available (variation)."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:178 includes/frontend.js:35
-msgid "Selected variation is out of stock."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:204
-#, php-format
-msgid "Only %s available."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:211
-msgid "Please select product options first."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:218
-msgid "This product type is not supported."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:235 includes/class-qcp-order.php:45
-msgid "Internal Error: Invalid product data."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:239 includes/class-qcp-order.php:53
-msgid "Internal Error: Invalid variation data."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:258
-msgid "Thank you! Order received."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:269
-msgid "Invalid product ID."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:270
-msgid "Product is not variable."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:275 includes/class-qcp-ajax.php:283
-msgid "Error loading options."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:280
-msgid "No variations available or error loading options."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:288 includes/class-qcp-order.php:133
-#: includes/frontend.js:228
-msgid "Coupons disabled."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:293 includes/frontend.js:234
-msgid "Enter coupon code."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:296
-msgid "Invalid or expired coupon."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:310
-msgid "Coupon not valid for product."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:312
-#, php-format
-msgid "Min spend: %s."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:314
-#, php-format
-msgid "Max spend: %s."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:316
-msgid "Coupon not valid for sale items."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:326 includes/frontend.js:241
-msgid "Coupon applied."
-msgstr ""
-
-#: includes/class-qcp-ajax.php:343 includes/class-qcp-ajax.php:355
-msgid "Invalid request."
-msgstr ""
-
-#: includes/class-qcp-admin.php:48 includes/class-qcp-admin.php:107
-msgid "Quick Checkout Settings"
-msgstr ""
-
-#: includes/class-qcp-admin.php:49 includes/class-qcp-admin.php:108
-msgid "Quick Checkout"
-msgstr ""
-
-#: includes/class-qcp-admin.php:63
-msgid "Activation & Stats"
-msgstr ""
-
-#: includes/class-qcp-admin.php:64
-msgid "Form Fields"
-msgstr ""
-
-#: includes/class-qcp-admin.php:65
-msgid "Order & Integrations"
-msgstr ""
-
-#: includes/class-qcp-admin.php:66
-msgid "Thank You"
-msgstr ""
-
-#: includes/class-qcp-admin.php:67
-msgid "Tracking"
-msgstr ""
-
-#: includes/class-qcp-admin.php:68
-msgid "Statistics View"
-msgstr ""
-
-#: includes/class-qcp-admin.php:97
-msgid "Enable \"Buy Now\" Button"
-msgstr ""
-
-#: includes/class-qcp-admin.php:97
-msgid "Replaces Add to Cart with \"Buy Now\" for simple/variable products."
-msgstr ""
-
-#: includes/class-qcp-admin.php:98
-msgid "\"Buy Now\" Button Text (Simple)"
-msgstr ""
-
-#: includes/class-qcp-admin.php:99
-msgid "Enable Popup Checkout"
-msgstr ""
-
-#: includes/class-qcp-admin.php:99
-msgid "Open checkout form in a popup on button click."
-msgstr ""
-
-#: includes/class-qcp-admin.php:101
-msgid "Enable Statistics Tracking"
-msgstr ""
-
-#: includes/class-qcp-admin.php:101
-msgid "Track button clicks and successful orders via popup."
-msgstr ""
-
-#: includes/class-qcp-admin.php:106
-msgid "Field Requirements"
-msgstr ""
-
-#: includes/class-qcp-admin.php:110
-msgid "Default Payment Method"
-msgstr ""
-
-#: includes/class-qcp-admin.php:110
-msgid "Select the payment method for Quick Checkout orders."
-msgstr ""
-
-#: includes/class-qcp-admin.php:111
-msgid "Enable Google Sheets Sync"
-msgstr ""
-
-#: includes/class-qcp-admin.php:112
-msgid "Google Apps Script URL"
-msgstr ""
-
-#: includes/class-qcp-admin.php:112
-msgid "Enter the Web App URL from Google Apps Script."
-msgstr ""
-
-#: includes/class-qcp-admin.php:113
-msgid "Google Sheets Secret Key"
-msgstr ""
-
-#: includes/class-qcp-admin.php:113
-msgid "Enter a secret key matching your Apps Script."
-msgstr ""
-
-#: includes/class-qcp-admin.php:117
-msgid "Confirmation Message"
-msgstr ""
-
-#: includes/class-qcp-admin.php:121
-msgid "Google Analytics ID (GA4: G-XXXX)"
-msgstr ""
-
-#: includes/class-qcp-admin.php:122
-msgid "Facebook Pixel ID"
-msgstr ""
-
-#: includes/class-qcp-admin.php:132
-msgid "You do not have sufficient permissions to access this page."
-msgstr ""
-
-#: includes/class-qcp-admin.php:181
-msgid "Save Settings"
-msgstr ""
-
-#: includes/class-qcp-admin.php:255
-msgid "Select which fields should be required in the popup form. Email field is currently removed."
+#: includes/class-qcp-admin.php:355 includes/class-qcp-ajax.php:93
+#: templates/popup-checkout-form.php:158
+msgid "Full Name"
 msgstr ""
 
 #: includes/class-qcp-admin.php:259
@@ -396,56 +37,70 @@ msgid ""
 "enabled in the \"Activation & Stats\" tab."
 msgstr ""
 
-#: includes/class-qcp-admin.php:264
-msgid "Statistics tracking is currently disabled."
+#: includes/class-qcp-admin.php:255
+msgid ""
+"Select which fields should be required in the popup form. Email field is "
+"currently removed."
 msgstr ""
 
-#: includes/class-qcp-admin.php:266
-msgid "Statistics module is not active or available."
+#: includes/class-qcp-admin.php:110
+msgid "Select the payment method for Quick Checkout orders."
 msgstr ""
 
-#: includes/class-qcp-admin.php:326
-msgid "Form Field"
+#: includes/class-qcp-admin.php:113
+msgid "Enter a secret key matching your Apps Script."
 msgstr ""
 
-#: includes/class-qcp-admin.php:327
-msgid "Required?"
+#: includes/class-qcp-admin.php:112
+msgid "Enter the Web App URL from Google Apps Script."
 msgstr ""
 
-#: includes/class-qcp-admin.php:355 includes/class-qcp-admin.php:363
-msgid "Name"
+#: includes/class-qcp-admin.php:97
+msgid "Replaces Add to Cart with \"Buy Now\" for simple/variable products."
 msgstr ""
 
-#: includes/class-qcp-admin.php:356 includes/class-qcp-admin.php:364
-msgid "Phone"
+#: includes/class-qcp-admin.php:99
+msgid "Open checkout form in a popup on button click."
 msgstr ""
 
-#: includes/class-qcp-admin.php:357 includes/class-qcp-admin.php:365
-msgid "City"
+#: includes/class-qcp-admin.php:101
+msgid "Track button clicks and successful orders via popup."
 msgstr ""
 
-#: includes/class-qcp-admin.php:358 includes/class-qcp-admin.php:366
-msgid "Address"
+#: includes/class-qcp-sheets.php:147
+msgid "Failed to send data to Google Sheets: "
 msgstr ""
 
-#: includes/class-qcp-admin.php:377
-msgid "No payment gateways are currently available."
+#: includes/class-qcp-sheets.php:138
+msgid "Unknown error logging to the sheet."
 msgstr ""
 
-#: includes/class-qcp-order.php:61
-msgid "Internal Error: Could not validate item."
+#: includes/class-qcp-sheets.php:126
+msgid "Could not connect to Google Sheets server: "
 msgstr ""
 
-#: includes/class-qcp-order.php:64
-msgid "Item cannot be purchased."
+#: includes/class-qcp-sheets.php:106
+msgid "Failed to prepare data for Google Sheets (JSON encode error)."
 msgstr ""
 
-#: includes/class-qcp-order.php:65
-msgid "Not enough stock."
+#: includes/class-qcp-sheets.php:46
+msgid "Google Sheets Secret Key is not configured."
 msgstr ""
 
-#: includes/class-qcp-order.php:74
-msgid "Could not initiate order."
+#: includes/class-qcp-sheets.php:42
+msgid "Google Sheets Web App URL is missing or invalid."
+msgstr ""
+
+#: includes/class-qcp-order.php:127
+msgid "Order via Quick Checkout."
+msgstr ""
+
+#: includes/class-qcp-order.php:122
+msgid "Failed to save order data."
+msgstr ""
+
+#: includes/class-qcp-order.php:111
+msgid "No suitable payment method available."
 msgstr ""
 
 #: includes/class-qcp-order.php:97
@@ -453,182 +108,479 @@ msgstr ""
 msgid "Coupon \"%s\" could not be applied. Reason: %s"
 msgstr ""
 
-#: includes/class-qcp-order.php:111
-msgid "No suitable payment method available."
+#: includes/class-qcp-order.php:74
+msgid "Could not initiate order."
 msgstr ""
 
-#: includes/class-qcp-order.php:122
-msgid "Failed to save order data."
+#: includes/class-qcp-order.php:65
+msgid "Not enough stock."
 msgstr ""
 
-#: includes/class-qcp-order.php:127
-msgid "Order via Quick Checkout."
+#: includes/class-qcp-order.php:64
+msgid "Item cannot be purchased."
 msgstr ""
 
-#: includes/class-qcp-sheets.php:42
-msgid "Google Sheets Web App URL is missing or invalid."
+#: includes/class-qcp-order.php:61
+msgid "Internal Error: Could not validate item."
 msgstr ""
 
-#: includes/class-qcp-sheets.php:46
-msgid "Google Sheets Secret Key is not configured."
+#: includes/class-qcp-ajax.php:377 includes/class-qcp-ajax.php:365
+msgid "Invalid request."
 msgstr ""
 
-#: includes/class-qcp-sheets.php:106
-msgid "Failed to prepare data for Google Sheets (JSON encode error)."
+#: includes/class-qcp-ajax.php:348
+msgid "Coupon applied."
 msgstr ""
 
-#: includes/class-qcp-sheets.php:126
-msgid "Could not connect to Google Sheets server: "
+#: includes/class-qcp-ajax.php:338
+msgid "Coupon not valid for sale items."
 msgstr ""
 
-#: includes/class-qcp-sheets.php:138
-msgid "Unknown error logging to the sheet."
+#: includes/class-qcp-ajax.php:336
+#, php-format
+msgid "Max spend: %s."
 msgstr ""
 
-#: includes/class-qcp-sheets.php:147
-msgid "Failed to send data to Google Sheets: "
+#: includes/class-qcp-ajax.php:334
+#, php-format
+msgid "Min spend: %s."
 msgstr ""
 
-#: includes/class-qcp-stats.php:71
-msgid "\"Buy Now\" Clicks Tracked"
+#: includes/class-qcp-ajax.php:332
+msgid "Coupon not valid for product."
 msgstr ""
 
-#: includes/class-qcp-stats.php:76
-msgid "Successful Orders via Popup"
+#: includes/class-qcp-ajax.php:318
+msgid "Invalid or expired coupon."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:310
+msgid "Coupons disabled."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:302
+msgid "No variations available or error loading options."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:305 includes/class-qcp-ajax.php:297
+msgid "Error loading options."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:292
+msgid "Product is not variable."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:291
+msgid "Invalid product ID."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:280
+msgid "Thank you! Order received."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:261 includes/class-qcp-order.php:53
+msgid "Internal Error: Invalid variation data [B]."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:257 includes/class-qcp-order.php:45
+msgid "Internal Error: Invalid product data [A]."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:240
+msgid "This product type is not supported."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:237 includes/class-qcp-ajax.php:233
+msgid "Please select product options first."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:228 includes/class-qcp-ajax.php:181
+msgid "This product is currently out of stock."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:226
+#, php-format
+msgid "Only %s available."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:200
+msgid "Selected variation is out of stock."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:200
+#, php-format
+msgid "Only %s available (variation)."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:194
+msgid "Error validating product variation details."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:188
+msgid "Invalid product variation selected."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:178
+msgid "This product cannot be purchased at this time."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:328 includes/class-qcp-ajax.php:175
+msgid "Product not found."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:163
+msgid "Invalid product data received."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:158
+msgid "Invalid phone format."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:156 includes/class-qcp-main.php:138
+#: templates/popup-checkout-form.php:32
+msgid "required"
+msgstr ""
+
+#: includes/class-qcp-ajax.php:156
+#, php-format
+msgid "%s is required."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:152 includes/class-qcp-main.php:87
+msgid "Quantity must be at least 1."
+msgstr ""
+
+#: includes/class-qcp-ajax.php:73
+msgid "Security check failed."
 msgstr ""
 
 #: includes/class-qcp-stats.php:81
 msgid "Conversion Rate (Clicks to Orders)"
 msgstr ""
 
-#: includes/frontend.js:357
-msgid "Stats disabled, click not recorded"
+#: includes/class-qcp-stats.php:76
+msgid "Successful Orders via Popup"
 msgstr ""
 
-#: includes/frontend.js:361
-msgid "QCP Stat Track Success:"
+#: includes/class-qcp-stats.php:71
+msgid "\"Buy Now\" Clicks Tracked"
 msgstr ""
 
-#: includes/frontend.js:363
-msgid "QCP Stat Track Server Response:"
+#: quick-checkout-popup.php:40
+#, php-format
+msgid ""
+"<strong>%s</strong> requires WooCommerce to be installed and activated. "
+"Please install or activate WooCommerce."
 msgstr ""
 
-#: includes/frontend.js:363
-msgid "No message"
-msgstr ""
-
-#: includes/frontend.js:366
-msgid "QCP Stat Track AJAX Error:"
-msgstr ""
-
-#: popup-checkout-form.php:14
-msgid "Order Placed Successfully!"
-msgstr ""
-
-#: popup-checkout-form.php:29
-msgid "Close"
-msgstr ""
-
-#: popup-checkout-form.php:30
-msgid "Quick Checkout"
-msgstr ""
-
-#: popup-checkout-form.php:35
-msgid "Processing your order..."
-msgstr ""
-
-#: popup-checkout-form.php:43
-msgid "Loading..."
-msgstr ""
-
-#: popup-checkout-form.php:85 includes/popup-checkout-form.php:113
-#: includes/popup-checkout-form.php:116 includes/popup-checkout-form.php:149
-#: includes/popup-checkout-form.php:150
-msgid "Quantity"
-msgstr ""
-
-#: popup-checkout-form.php:86
-msgid "Decrease quantity"
-msgstr ""
-
-#: popup-checkout-form.php:88
-msgid "Increase quantity"
-msgstr ""
-
-#: popup-checkout-form.php:98
-msgid "Shipping Details"
-msgstr ""
-
-#: popup-checkout-form.php:125
-msgid "House number and street name"
-msgstr ""
-
-#: popup-checkout-form.php:141
-msgid "Apply Coupon"
-msgstr ""
-
-#: popup-checkout-form.php:142 includes/popup-checkout-form.php:143
-msgid "Coupon code"
-msgstr ""
-
-#: popup-checkout-form.php:154
-msgid "Free Shipping"
-msgstr ""
-
-#: popup-checkout-form.php:155
-msgid "Cash on Delivery"
-msgstr ""
-
-#: popup-checkout-form.php:158 includes/popup-checkout-form.php:159
-msgid "Place Order"
-msgstr ""
-
-#: popup-checkout-form.php:167
+#: templates/popup-checkout-form.php:220
 msgid "Continue Shopping"
 msgstr ""
 
-#: includes/frontend.js:24
-msgid "Required."
+#: templates/popup-checkout-form.php:209 templates/popup-checkout-form.php:208
+#: templates/popup-checkout-form.php:23 includes/class-qcp-main.php:150
+#: includes/class-qcp-main.php:148
+msgid "Place Order"
 msgstr ""
 
-#: includes/frontend.js:266
-msgid "Error: Product info missing."
+#: templates/popup-checkout-form.php:203
+msgid "Secure Checkout"
 msgstr ""
 
-#: includes/frontend.js:297
-msgid "Error finding selected variation."
+#: templates/popup-checkout-form.php:199
+msgid "Payment upon receipt"
 msgstr ""
 
-#: includes/frontend.js:338
-msgid "An unknown server error occurred."
+#: templates/popup-checkout-form.php:195
+msgid "Fast Delivery available"
 msgstr ""
 
-#: includes/frontend.js:345
-msgid "AJAX Error ("
+#: templates/popup-checkout-form.php:161
+msgid "Enter your town or city"
 msgstr ""
 
-#: includes/frontend.js:345
-msgid "). Please try again."
+#: templates/popup-checkout-form.php:161
+msgid "Enter your phone number"
 msgstr ""
 
-#: includes/frontend.js:356
-msgid "Stats disabled or invalid ID"
+#: templates/popup-checkout-form.php:161
+msgid "Enter your full name"
 msgstr ""
 
-#: includes/frontend.js:359
-msgid "Stats tracking call sent"
+#: templates/popup-checkout-form.php:153 includes/popup-checkout-form.php:194
+msgid "Shipping Details"
 msgstr ""
 
-#: includes/popup-checkout-form.php:22
-#: includes/class-qcp-ajax.php:134
-msgid "required"
+#: templates/popup-checkout-form.php:147
+msgid "Order Summary"
 msgstr ""
 
-#: includes/popup-checkout-form.php:87
+#: templates/popup-checkout-form.php:143
+msgid "Confirm Your Order"
+msgstr ""
+
+#: templates/popup-checkout-form.php:132 includes/class-qcp-main.php:149
+msgid "Total"
+msgstr ""
+
+#: templates/popup-checkout-form.php:126 includes/class-qcp-main.php:96
+msgid "Remove"
+msgstr ""
+
+#: templates/popup-checkout-form.php:125 includes/class-qcp-main.php:94
+msgid "Apply"
+msgstr ""
+
+#: templates/popup-checkout-form.php:124 templates/popup-checkout-form.php:123
+msgid "Coupon code"
+msgstr ""
+
+#: templates/popup-checkout-form.php:109
+msgid "House number and street name"
+msgstr ""
+
+#: templates/popup-checkout-form.php:98
+msgid "Increase quantity"
+msgstr ""
+
+#: templates/popup-checkout-form.php:97
 msgid "Product quantity"
 msgstr ""
 
-#: includes/popup-checkout-form.php:105
-#: includes/class-qcp-ajax.php:93
+#: templates/popup-checkout-form.php:96
+msgid "Decrease quantity"
+msgstr ""
+
+#: templates/popup-checkout-form.php:95 templates/popup-checkout-form.php:107
+msgid "Quantity"
+msgstr ""
+
+#: templates/popup-checkout-form.php:82 includes/class-qcp-ajax.php:115
 msgid "Your Order"
+msgstr ""
+
+#: templates/popup-checkout-form.php:71 includes/class-qcp-main.php:105
+msgid "Select Variation"
+msgstr ""
+
+#: templates/popup-checkout-form.php:69 includes/class-qcp-main.php:103
+msgid "Loading options..."
+msgstr ""
+
+#: templates/popup-checkout-form.php:66 includes/class-qcp-frontend.php:51
+#: includes/class-qcp-frontend.php:46
+msgid "Select Options"
+msgstr ""
+
+#: templates/popup-checkout-form.php:49
+msgid "Loading..."
+msgstr ""
+
+#: templates/popup-checkout-form.php:41
+msgid "Processing your order..."
+msgstr ""
+
+#: templates/popup-checkout-form.php:36 includes/class-qcp-admin.php:108
+#: includes/class-qcp-admin.php:49
+msgid "Quick Checkout"
+msgstr ""
+
+#: templates/popup-checkout-form.php:35
+msgid "Close"
+msgstr ""
+
+#: templates/popup-checkout-form.php:21 includes/class-qcp-main.php:82
+msgid "Thank you for your order! We will contact you shortly."
+msgstr ""
+
+#: templates/popup-checkout-form.php:20
+msgid "Order Placed Successfully!"
+msgstr ""
+
+#: includes/class-qcp-main.php:146
+msgid "enable_stats"
+msgstr ""
+
+#: includes/class-qcp-main.php:106
+msgid "Proceed to Checkout"
+msgstr ""
+
+#: includes/class-qcp-main.php:104
+msgid "Options loaded."
+msgstr ""
+
+#: includes/class-qcp-main.php:102
+msgid "Sorry, this combination is out of stock."
+msgstr ""
+
+#: includes/class-qcp-main.php:101
+msgid "Sorry, this combination is unavailable."
+msgstr ""
+
+#: includes/class-qcp-main.php:97
+msgid "Removing..."
+msgstr ""
+
+#: includes/class-qcp-main.php:95
+msgid "Applying..."
+msgstr ""
+
+#: includes/class-qcp-main.php:93
+msgid "Please enter a coupon code."
+msgstr ""
+
+#: includes/class-qcp-main.php:92
+msgid "Coupon removed."
+msgstr ""
+
+#: includes/class-qcp-main.php:91
+msgid "Coupon applied successfully."
+msgstr ""
+
+#: includes/class-qcp-main.php:90
+msgid "Error applying coupon."
+msgstr ""
+
+#: includes/class-qcp-main.php:86
+msgid "Please enter a valid number."
+msgstr ""
+
+#: includes/class-qcp-main.php:85
+msgid "Please enter a valid phone number."
+msgstr ""
+
+#: includes/class-qcp-main.php:84
+msgid "This field is required."
+msgstr ""
+
+#: includes/class-qcp-frontend.php:87
+msgid "This product is currently unavailable."
+msgstr ""
+
+#: includes/class-qcp-frontend.php:67
+msgid "Quick Buy / Select Options"
+msgstr ""
+
+#: includes/class-qcp-frontend.php:45
+msgid "Buy Now"
+msgstr ""
+
+#: includes/class-qcp-admin.php:377
+msgid "No payment gateways are currently available."
+msgstr ""
+
+#: includes/class-qcp-admin.php:366 includes/class-qcp-admin.php:358
+msgid "Address"
+msgstr ""
+
+#: includes/class-qcp-admin.php:365 includes/class-qcp-admin.php:357
+msgid "City"
+msgstr ""
+
+#: includes/class-qcp-admin.php:364 includes/class-qcp-admin.php:356
+msgid "Phone"
+msgstr ""
+
+#: includes/class-qcp-admin.php:363 includes/class-qcp-admin.php:355
+msgid "Name"
+msgstr ""
+
+#: includes/class-qcp-admin.php:327
+msgid "Required?"
+msgstr ""
+
+#: includes/class-qcp-admin.php:326
+msgid "Form Field"
+msgstr ""
+
+#: includes/class-qcp-admin.php:266
+msgid "Statistics module is not active or available."
+msgstr ""
+
+#: includes/class-qcp-admin.php:264
+msgid "Statistics tracking is currently disabled."
+msgstr ""
+
+#: includes/class-qcp-admin.php:181
+msgid "Save Settings"
+msgstr ""
+
+#: includes/class-qcp-admin.php:132
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: includes/class-qcp-admin.php:122
+msgid "Facebook Pixel ID"
+msgstr ""
+
+#: includes/class-qcp-admin.php:121
+msgid "Google Analytics ID (GA4: G-XXXX)"
+msgstr ""
+
+#: includes/class-qcp-admin.php:117
+msgid "Confirmation Message"
+msgstr ""
+
+#: includes/class-qcp-admin.php:113
+msgid "Google Sheets Secret Key"
+msgstr ""
+
+#: includes/class-qcp-admin.php:112
+msgid "Google Apps Script URL"
+msgstr ""
+
+#: includes/class-qcp-admin.php:111
+msgid "Enable Google Sheets Sync"
+msgstr ""
+
+#: includes/class-qcp-admin.php:110
+msgid "Default Payment Method"
+msgstr ""
+
+#: includes/class-qcp-admin.php:106
+msgid "Field Requirements"
+msgstr ""
+
+#: includes/class-qcp-admin.php:101
+msgid "Enable Statistics Tracking"
+msgstr ""
+
+#: includes/class-qcp-admin.php:99
+msgid "Enable Popup Checkout"
+msgstr ""
+
+#: includes/class-qcp-admin.php:98
+msgid "\"Buy Now\" Button Text (Simple)"
+msgstr ""
+
+#: includes/class-qcp-admin.php:97
+msgid "Enable \"Buy Now\" Button"
+msgstr ""
+
+#: includes/class-qcp-admin.php:68
+msgid "Statistics View"
+msgstr ""
+
+#: includes/class-qcp-admin.php:67
+msgid "Tracking"
+msgstr ""
+
+#: includes/class-qcp-admin.php:66
+msgid "Thank You"
+msgstr ""
+
+#: includes/class-qcp-admin.php:65
+msgid "Order & Integrations"
+msgstr ""
+
+#: includes/class-qcp-admin.php:64
+msgid "Form Fields"
+msgstr ""
+
+#: includes/class-qcp-admin.php:63
+msgid "Activation & Stats"
+msgstr ""
+
+#: includes/class-qcp-admin.php:107
+msgid "Quick Checkout Settings"
 msgstr ""

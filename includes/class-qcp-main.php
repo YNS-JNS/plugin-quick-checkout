@@ -36,7 +36,7 @@ final class QCP_Main {
             require_once QCP_PLUGIN_DIR . 'includes/class-qcp-sheets.php';
         }
 
-        // *** CHANGEMENT : Vérifie l'option 'enable_stats' avant d'inclure ***
+        // Statistics
         if ( !empty($options['enable_stats']) && file_exists(QCP_PLUGIN_DIR . 'includes/class-qcp-stats.php')) {
             require_once QCP_PLUGIN_DIR . 'includes/class-qcp-stats.php';
         }
@@ -66,7 +66,8 @@ final class QCP_Main {
             $js_version = QCP_VERSION . '.' . (file_exists($js_file_path) ? filemtime($js_file_path) : '0');
 
             wp_enqueue_style('qcp-frontend-style', QCP_PLUGIN_URL . 'assets/css/frontend.css', [], $css_version);
-            wp_enqueue_script('qcp-frontend-script', QCP_PLUGIN_URL . 'assets/js/frontend.js', ['jquery'], $js_version, true);
+            // *** AJOUT DÉPENDANCE 'wc-price-format' pour accounting.js ***
+            wp_enqueue_script('qcp-frontend-script', QCP_PLUGIN_URL . 'assets/js/frontend.js', ['jquery', 'wc-price-format'], $js_version, true);
 
             // --- Prepare Data for JS ---
             $price_format_params = [
@@ -76,6 +77,9 @@ final class QCP_Main {
                  'decimal_separator'  => wc_get_price_decimal_separator(),
                  'decimals'           => wc_get_price_decimals(),
              ];
+
+            // *** AJOUTS ICI pour UX ***
+            $submit_button_base = __('Place Order', 'quick-checkout-popup'); // Texte de base pour le bouton
 
             wp_localize_script( 'qcp-frontend-script', 'qcp_params', array(
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -112,7 +116,10 @@ final class QCP_Main {
                 'price_format'          => $price_format_params,
                 'enable_coupons'        => apply_filters('qcp_enable_coupons', true), // Filter to easily disable coupons
                 'enable_variations'     => apply_filters('qcp_enable_variations', true), // Filter to easily disable variations
-                'enable_stats'          => !empty($options['enable_stats']), // *** AJOUT : Passe l'état des stats au JS ***
+                'enable_stats'          => !empty($options['enable_stats']),
+                // *** NOUVEAUX AJOUTS POUR UX ***
+                'submit_button_text_base' => $submit_button_base,
+                'total_label'             => __('Total', 'quick-checkout-popup'), // Label pour le Total
             ) );
         }
     }

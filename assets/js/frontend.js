@@ -1,12 +1,13 @@
 /**
  * Quick Checkout Popup Frontend Script V1 (Modern UI/UX)
- * Version: 1.0.1 - Added stats enable check.
+ * Version: 1.2.0 - Handles Placeholders, New Required Indicator, UI Refinements.
  */
 jQuery(document).ready(function ($) {
   // --- Setup ---
   var config = qcp_params || {};
-  if (typeof config.ajax_url === 'undefined') {
-    console.error('QCP Error: Config missing.');
+  if (typeof config.ajax_url === 'undefined' || typeof accounting === 'undefined') {
+    console.error('QCP Error: Config or Accounting Lib missing.');
+    $('.qcp-buy-now-button').hide();
     return;
   }
   var ajaxUrl = config.ajax_url;
@@ -31,12 +32,28 @@ jQuery(document).ready(function ($) {
     removeBtn: config.coupon_messages?.remove_text || 'Remove',
     removingBtn: config.coupon_messages?.removing_text || 'Removing...',
   };
-  var priceFormat = config.price_format || {};
+  var priceFormat = {
+    symbol: config.price_format?.currency_symbol || '$',
+    decimal: config.price_format?.decimal_separator || '.',
+    thousand: config.price_format?.thousand_separator || ',',
+    precision: config.price_format?.decimals ?? 2,
+    format:
+      (config.price_format?.currency_pos || 'left') === 'left'
+        ? '%s%v'
+        : config.price_format?.currency_pos === 'left_space'
+        ? '%s %v'
+        : config.price_format?.currency_pos === 'right_space'
+        ? '%v %s'
+        : '%v%s',
+  };
   var placeholderImage = config.placeholder_image_url || '';
   var enableCoupons = !!config.enable_coupons;
   var enableVariations = !!config.enable_variations;
-  var enableStats = !!config.enable_stats; // *** AJOUT : Récupère l'option stats ***
-  console.log('QCP Frontend Script Loaded v1.8.7'); // (Incrémenté pour la clarté)
+  var enableStats = !!config.enable_stats;
+  var baseSubmitText = config.submit_button_text_base || 'Place Order';
+  var totalLabel = config.total_label || 'Total';
+
+  console.log('QCP Frontend Script Loaded v1.2.0');
 
   // --- Selectors ---
   var $body = $('body');
@@ -44,13 +61,7 @@ jQuery(document).ready(function ($) {
   var $popupWrap = $('#qcp-popup-wrap');
   if (!$overlay.length || !$popupWrap.length) {
     console.error('QCP Init Error: Popup elements missing.');
-    $('.qcp-buy-now-button')
-      .off('click.qcp')
-      .addClass('qcp-button-disabled')
-      .on('click.qcp', function (e) {
-        e.preventDefault();
-        alert('Quick Buy Error: Popup structure missing.');
-      });
+    $('.qcp-buy-now-button').hide();
     return;
   }
   var $views = $('.qcp-popup-view');
@@ -70,7 +81,6 @@ jQuery(document).ready(function ($) {
   var $quantityInput = $('#qcp-quantity');
   var $qtyMinusBtn = $('.qcp-qty-minus');
   var $qtyPlusBtn = $('.qcp-qty-plus');
-  var $couponSection = $('#qcp-coupon-section');
   var $couponInput = $('#qcp-coupon-code');
   var $applyCouponButton = $('#qcp-apply-coupon-button');
   var $removeCouponButton = $('#qcp-remove-coupon-button');
@@ -84,7 +94,10 @@ jQuery(document).ready(function ($) {
   var $variationMessages = $('#qcp-variation-messages');
   var $selectVariationButton = $('#qcp-select-variation-button');
   var $submitButton = $('#qcp-submit-button');
+  var $submitButtonText = $submitButton.find('.qcp-button-text');
   var $successMessageEl = $('#qcp-success-message');
+  var $orderTotalValue = $('#qcp-order-total-value');
+  var $orderTotalLabel = $('#qcp-order-total-label');
 
   // --- State ---
   var state = {
@@ -103,48 +116,26 @@ jQuery(document).ready(function ($) {
   };
 
   // --- Helper Functions ---
-  function formatPrice(price) {
-    /* ... (inchangé) ... */ try {
-      var p = parseFloat(price);
-      if (isNaN(p)) return '';
-      var d = priceFormat.decimals ?? 2;
-      var ds = priceFormat.decimal_separator ?? '.';
-      var ts = priceFormat.thousand_separator ?? '';
-      var cs = priceFormat.currency_symbol ?? '$';
-      var cp = priceFormat.currency_pos ?? 'left';
-      var n = p.toFixed(d).replace('.', ds);
-      if (ts) {
-        var ps = n.split(ds);
-        ps[0] = ps[0].replace(/\B(?=(\d{3})+(?!\d))/g, ts);
-        n = ps.join(ds);
-      }
-      var f = n;
-      var sp = '\u00A0';
-      var r = '';
-      switch (cp) {
-        case 'left':
-          r = cs + f;
-          break;
-        case 'right':
-          r = f + cs;
-          break;
-        case 'left_space':
-          r = cs + sp + f;
-          break;
-        case 'right_space':
-          r = f + sp + cs;
-          break;
-        default:
-          r = cs + f;
-      }
-      return '<span class="woocommerce-Price-amount amount"><bdi>' + r + '</bdi></span>';
+  function formatPriceAccounting(price) {
+    /* ... (inchangé depuis 1.1.0) ... */ try {
+      return accounting.formatMoney(
+        price,
+        priceFormat.symbol,
+        priceFormat.precision,
+        priceFormat.thousand,
+        priceFormat.decimal,
+        priceFormat.format,
+      );
     } catch (e) {
-      console.error('FP Err:', e);
-      return price;
+      console.error('Price Format Error:', e);
+      var symbol = config.price_format?.currency_symbol || '$';
+      var decimals = config.price_format?.decimals ?? 2;
+      var formattedPrice = parseFloat(price).toFixed(decimals);
+      return symbol + formattedPrice;
     }
   }
   function debounce(func, wait) {
-    /* ... (inchangé) ... */ var t;
+    var t;
     return function () {
       var ctx = this,
         a = arguments;
@@ -155,7 +146,7 @@ jQuery(document).ready(function ($) {
     };
   }
   function setButtonLoadingState($button, isLoading) {
-    /* ... (inchangé) ... */ if (!$button || !$button.length) return;
+    if (!$button || !$button.length) return;
     if (isLoading) {
       $button.addClass('qcp-button--loading').prop('disabled', true);
     } else {
@@ -163,12 +154,12 @@ jQuery(document).ready(function ($) {
     }
   }
   function clearValidationErrors() {
-    /* ... (inchangé) ... */ $formErrorsGlobal.hide().html('');
+    $formErrorsGlobal.hide().html('');
     $form.find('.qcp-input-error').removeClass('qcp-input-error');
     $form.find('.qcp-field-error-message').text('').hide();
   }
   function displayValidationErrors(errors) {
-    /* ... (inchangé) ... */ clearValidationErrors();
+    /* ... (inchangé depuis 1.1.0, devrait bien gérer les erreurs) ... */ clearValidationErrors();
     var ge = [];
     var fe = null;
     var feId = null;
@@ -180,13 +171,25 @@ jQuery(document).ready(function ($) {
         }
         var $f = $('#' + fid);
         var $fw = $f.length
-          ? $f.closest('.form-row')
+          ? $f.closest('.form-row, .woocommerce-input-wrapper, p')
           : $('#' + fid + '_field').length
           ? $('#' + fid + '_field')
           : null;
-        if ($f.length && $fw.length) {
+        if ($f.length) {
           $f.addClass('qcp-input-error');
-          $fw.find('.qcp-field-error-message').text(msg).show();
+          var $errMsgEl = $f.siblings('.qcp-field-error-message').first();
+          if (!$errMsgEl.length && $fw && $fw.length) {
+            $errMsgEl = $fw.find('.qcp-field-error-message').first();
+          }
+          if ($errMsgEl.length) {
+            $errMsgEl.text(msg).show();
+          } else {
+            $f.after(
+              '<span class="qcp-field-error-message" role="alert" aria-live="polite" style="display:block;">' +
+                $('<div>').text(msg).html() +
+                '</span>',
+            );
+          }
           if (!fe) {
             fe = $f;
             feId = fid;
@@ -212,14 +215,22 @@ jQuery(document).ready(function ($) {
     }
     if (fe) {
       console.log('Focusing first error:', feId);
-      fe.trigger('focus');
+      setTimeout(
+        function () {
+          fe.trigger('focus');
+        },
+        ge.length > 0 ? 350 : 50,
+      );
       if (state.currentView === 'qcp-checkout-view' && ge.length === 0) {
-        $checkoutView.animate({ scrollTop: fe.closest('.form-row').position().top - 20 }, 300);
+        var scrollToPos = fe.closest('.form-row, p').length
+          ? fe.closest('.form-row, p').position().top
+          : fe.position().top;
+        $checkoutView.animate({ scrollTop: $checkoutView.scrollTop() + scrollToPos - 20 }, 300);
       }
     }
   }
   function displayCouponMessage(message, type = 'notice') {
-    /* ... (inchangé) ... */ var cls = 'woocommerce-message';
+    var cls = 'woocommerce-message';
     if (type === 'error') cls = 'woocommerce-error';
     else if (type === 'success') cls += ' woocommerce-message--success';
     $couponMessages
@@ -227,14 +238,14 @@ jQuery(document).ready(function ($) {
       .show();
   }
   function displayVariationMessage(message, type = 'notice') {
-    /* ... (inchangé) ... */ var cls = 'woocommerce-message';
+    var cls = 'woocommerce-message';
     if (type === 'error') cls = 'woocommerce-error';
     $variationMessages
       .html('<div class="' + cls + '" role="alert">' + $('<div>').text(message).html() + '</div>')
       .show();
   }
   function showPopupView(viewId) {
-    /* ... (inchangé) ... */ console.log('QCP Switching view to:', viewId);
+    console.log('QCP Switching view to:', viewId);
     var $targetView = $('#' + viewId);
     if ($targetView.length && state.currentView !== viewId) {
       var $currentActive = $views.filter('.qcp-view-active');
@@ -255,25 +266,43 @@ jQuery(document).ready(function ($) {
       console.error('QCP showPopupView Error: View element not found:', viewId);
     }
   }
+  function updateSubmitButtonText(total) {
+    if (!isNaN(total)) {
+      var formattedTotal = formatPriceAccounting(total);
+      var btnText = baseSubmitText + ' (' + formattedTotal + ')';
+      $submitButtonText.html(btnText);
+      $submitButton.val($('<div>').html(btnText).text());
+    } else {
+      $submitButtonText.text(baseSubmitText);
+      $submitButton.val(baseSubmitText);
+    }
+  }
   function updateCheckoutPriceDisplay() {
-    /* ... (inchangé) ... */ state.quantity = parseInt($quantityInput.val(), 10) || 1;
-    if (state.quantity < 1) state.quantity = 1;
-    var subtotal = state.basePrice * state.quantity;
+    if (isNaN(state.quantity) || state.quantity < 1) state.quantity = 1;
+    var unitPrice = state.basePrice;
+    var subtotal = unitPrice * state.quantity;
     var total = subtotal;
     if (state.coupon.code && state.coupon.amount > 0) {
-      var discount =
-        state.coupon.type === 'percent'
-          ? subtotal * (state.coupon.amount / 100)
-          : state.coupon.amount;
-      if (state.coupon.type !== 'percent') discount = Math.min(discount, subtotal);
-      total -= discount;
+      var discount = 0;
+      if (state.coupon.type === 'percent') {
+        discount = subtotal * (state.coupon.amount / 100);
+      } else {
+        discount =
+          state.coupon.type === 'fixed_cart'
+            ? state.coupon.amount
+            : state.coupon.amount * state.quantity;
+      }
+      discount = Math.min(discount, subtotal);
+      total = subtotal - discount;
     }
     total = Math.max(0, total);
-    $checkoutProductPrice.html(formatPrice(total));
+    $checkoutProductPrice.html(formatPriceAccounting(unitPrice));
+    $orderTotalValue.html(formatPriceAccounting(total));
+    updateSubmitButtonText(total);
   }
-  var debouncedUpdateCheckoutPrice = debounce(updateCheckoutPriceDisplay, 200);
+  var debouncedUpdateCheckoutPrice = debounce(updateCheckoutPriceDisplay, 150);
   function resetPopupState() {
-    /* ... (inchangé) ... */ console.log('QCP Resetting Popup State');
+    console.log('QCP Resetting Popup State');
     $form[0]?.reset();
     clearValidationErrors();
     $quantityInput.val(1);
@@ -297,6 +326,7 @@ jQuery(document).ready(function ($) {
     $checkoutProductName.text('');
     $checkoutProductPrice.html('');
     $checkoutProductImage.attr('src', placeholderImage);
+    $orderTotalValue.html('');
     $variationOptionsContainer.html(
       '<p class="qcp-variation-loading-text">' + messages.addingOpts + '</p>',
     );
@@ -305,13 +335,15 @@ jQuery(document).ready(function ($) {
     $variationStockStatus.text('').removeClass('in-stock out-of-stock');
     resetCouponUIState(true);
     setButtonLoadingState($submitButton, false);
+    $submitButtonText.text(baseSubmitText);
+    $submitButton.val(baseSubmitText);
     $processingOverlay.removeClass('qcp-visible');
     $views.removeClass('qcp-view-active').hide();
   }
 
   // --- Core Logic ---
   function openPopup(productId, productType, data) {
-    /* ... (inchangé) ... */ console.log('QCP openPopup START:', { productId, productType, data });
+    console.log('QCP openPopup START:', { productId, productType, data });
     if (!$overlay.length || !$popupWrap.length) {
       console.error('QCP FATAL: Popup elements missing.');
       alert('Error: Popup failed.');
@@ -324,12 +356,12 @@ jQuery(document).ready(function ($) {
     $popupWrap.removeClass('qcp-popup-hidden');
     $body.addClass('qcp-popup-is-open');
     console.log('QCP Overlay/Wrap shown.');
-    if (productType === 'variable') {
+    if (productType === 'variable' && enableVariations) {
       console.log('QCP Handling as Variable Product');
       showPopupView('qcp-loading-view');
       state.isLoadingVariations = true;
       loadVariationData(productId, data);
-    } else if (productType === 'simple') {
+    } else if (productType === 'simple' || (productType === 'variable' && !enableVariations)) {
       console.log('QCP Handling as Simple Product');
       populateCheckoutForm(
         productId,
@@ -348,7 +380,7 @@ jQuery(document).ready(function ($) {
     $popupWrap.scrollTop(0);
   }
   function loadVariationData(productId, baseData) {
-    /* ... (inchangé) ... */ console.log('QCP Loading variations for:', productId);
+    console.log('QCP Loading variations for:', productId);
     $variationProductName.text(baseData.productName);
     $variationProductPrice.html(baseData.productPriceHtml);
     $variationProductImage
@@ -399,7 +431,7 @@ jQuery(document).ready(function ($) {
       });
   }
   function initializeVariationForm() {
-    /* ... (inchangé) ... */ var $vf = $variationOptionsContainer.find('form.variations_form');
+    var $vf = $variationOptionsContainer.find('form.variations_form');
     if (!$vf.length) {
       console.error('QCP Variation Init Error: variations_form not found.');
       return;
@@ -442,9 +474,10 @@ jQuery(document).ready(function ($) {
         $variationMessages.hide().html('');
       }
     });
+    $sel.first().trigger('change');
   }
   function findMatchingVariation() {
-    /* ... (inchangé) ... */ var match = null;
+    var match = null;
     if (!Array.isArray(state.variations) || state.variations.length === 0) {
       console.warn('QCP findMatchingVariation: No variations data.');
       updateVariationDisplay(null);
@@ -477,7 +510,7 @@ jQuery(document).ready(function ($) {
     updateVariationDisplay(match);
   }
   function updateVariationDisplay(variation) {
-    /* ... (inchangé) ... */ if (variation) {
+    if (variation) {
       console.log('QCP Match found:', variation);
       $variationMessages.hide().html('');
       $variationProductImage.attr(
@@ -489,7 +522,7 @@ jQuery(document).ready(function ($) {
         $variationStockStatus
           .removeClass('out-of-stock')
           .addClass('in-stock')
-          .html(variation.availability_html || messages.inStock || 'In stock');
+          .html(variation.availability_html || 'In stock');
         $selectVariationButton.prop('disabled', false).text(messages.proceed);
         state.variationId = variation.variation_id;
         state.basePrice = parseFloat(variation.display_price) || 0;
@@ -500,12 +533,14 @@ jQuery(document).ready(function ($) {
           .html(variation.availability_html || messages.varOOS);
         $selectVariationButton.prop('disabled', true).text(messages.varOOS);
         state.variationId = 0;
+        state.basePrice = 0;
       }
     } else {
       console.log('QCP No matching variation.');
       state.variationId = 0;
+      state.basePrice = 0;
       $variationProductPrice.html('');
-      $variationStockStatus.text('');
+      $variationStockStatus.text('').removeClass('in-stock out-of-stock');
       $selectVariationButton.prop('disabled', true).text(messages.varUnavailable);
       displayVariationMessage(messages.varUnavailable, 'error');
       $variationProductImage.attr(
@@ -515,7 +550,7 @@ jQuery(document).ready(function ($) {
     }
   }
   function populateCheckoutForm(productId, variationId, name, priceHtml, imageUrl, rawPrice) {
-    /* ... (inchangé) ... */ $productIdInput.val(productId);
+    $productIdInput.val(productId);
     $variationIdInput.val(variationId || 0);
     $checkoutProductName.text(name);
     $checkoutProductImage.attr('src', imageUrl || placeholderImage);
@@ -523,10 +558,11 @@ jQuery(document).ready(function ($) {
     state.quantity = 1;
     $quantityInput.val(1);
     resetCouponUIState(true);
+    $checkoutProductPrice.html(formatPriceAccounting(state.basePrice));
     updateCheckoutPriceDisplay();
   }
   function closePopups() {
-    /* ... (inchangé) ... */ console.log('QCP closePopups called.');
+    console.log('QCP closePopups called.');
     $overlay.addClass('qcp-popup-hidden');
     $popupWrap.addClass('qcp-popup-hidden');
     $body.removeClass('qcp-popup-is-open');
@@ -548,16 +584,16 @@ jQuery(document).ready(function ($) {
       productImageUrl: $btn.data('product-image-url'),
       productRawPrice: $btn.data('product-price'),
     };
-    if (!pid || !data.productName) {
-      console.error('QCP Error: Missing data on button.');
+    if (!pid || !data.productName || typeof data.productRawPrice === 'undefined') {
+      console.error('QCP Error: Missing data on button (ID, Name, or Price).', data);
       alert('Error: Product info missing.');
       return;
     }
     openPopup(pid, ptype, data);
-    trackStat('click', pid); // Appel de la fonction de suivi
+    trackStat('click', pid);
   });
   $selectVariationButton.on('click.qcp', function (e) {
-    /* ... (inchangé) ... */ e.preventDefault();
+    e.preventDefault();
     if (state.variationId > 0) {
       var selVar = state.variations.find(function (v) {
         return v.variation_id === state.variationId;
@@ -581,33 +617,38 @@ jQuery(document).ready(function ($) {
     }
   });
   $qtyMinusBtn.on('click.qcp', function (e) {
-    /* ... (inchangé) ... */ e.preventDefault();
+    e.preventDefault();
     var v = parseInt($quantityInput.val(), 10);
-    if (!isNaN(v) && v > 1) $quantityInput.val(v - 1).trigger('input');
+    if (!isNaN(v) && v > 1) {
+      $quantityInput.val(v - 1).trigger('input');
+    }
   });
   $qtyPlusBtn.on('click.qcp', function (e) {
-    /* ... (inchangé) ... */ e.preventDefault();
+    e.preventDefault();
     var v = parseInt($quantityInput.val(), 10);
     $quantityInput.val(isNaN(v) ? 1 : v + 1).trigger('input');
   });
   $quantityInput.on('change.qcp input.qcp', function () {
-    /* ... (inchangé) ... */ var q = parseInt($(this).val(), 10);
+    var q = parseInt($(this).val(), 10);
     var min = parseInt($(this).attr('min')) || 1;
-    if (isNaN(q) || q < min) $(this).val(min);
+    if (isNaN(q) || q < min) {
+      q = min;
+      $(this).val(q);
+    }
+    state.quantity = q;
     debouncedUpdateCheckoutPrice();
   });
   $popupWrap.on('click.qcp', '.qcp-popup-close', function (e) {
-    /* ... (inchangé) ... */ e.preventDefault();
+    e.preventDefault();
     closePopups();
-  }); // Delegated close
+  });
   $overlay.on('click.qcp', function (e) {
-    /* ... (inchangé) ... */ if ($(e.target).is('#qcp-popup-overlay')) {
+    if ($(e.target).is('#qcp-popup-overlay')) {
       e.preventDefault();
       closePopups();
     }
   });
   if (enableCoupons) {
-    /* ... (inchangé) ... */
     $applyCouponButton.on('click.qcp', function (e) {
       e.preventDefault();
       applyCoupon();
@@ -620,11 +661,10 @@ jQuery(document).ready(function ($) {
 
   // --- Checkout Form Submit ---
   $form.on('submit.qcp', function (e) {
-    /* ... (inchangé) ... */ e.preventDefault();
+    /* ... (inchangé, validation frontend via `[required]` est gérée) ... */ e.preventDefault();
     if (state.isSubmitting) return;
     console.log('QCP Form Submit triggered.');
     clearValidationErrors();
-
     var errors = {};
     var firstErrorField = null;
     $form.find('[required]:visible').each(function () {
@@ -644,23 +684,19 @@ jQuery(document).ready(function ($) {
       errors[$quantityInput.attr('id') || 'qcp-quantity'] = messages.minQty;
       if (!firstErrorField) firstErrorField = $quantityInput;
     }
-    if (state.productType === 'variable' && state.variationId === 0 /*&& enableVariations*/) {
+    if (state.productType === 'variable' && state.variationId === 0 && enableVariations) {
       errors['global_variation'] = messages.selectOpts;
-    } // Rely on productType only
-
+    }
     if (Object.keys(errors).length > 0) {
       console.log('QCP Validation Failed:', errors);
       displayValidationErrors(errors);
       return;
     }
-
-    // *** SHOW PROCESSING OVERLAY ***
-    $processingOverlay.addClass('qcp-visible').show(); // Show overlay smoothly
+    $processingOverlay.addClass('qcp-visible').show();
     state.isSubmitting = true;
     setButtonLoadingState($submitButton, true);
     var formData = $form.serialize();
     console.log('QCP Form Data for Submit:', formData);
-
     $.ajax({
       type: 'POST',
       url: ajaxUrl,
@@ -699,7 +735,7 @@ jQuery(document).ready(function ($) {
 
   // --- Coupon Functions ---
   function applyCoupon() {
-    /* ... (inchangé) ... */ if (state.isApplyingCoupon) return;
+    if (state.isApplyingCoupon) return;
     var c = $.trim($couponInput.val());
     if (!c) {
       displayCouponMessage(messages.couponEnter, 'error');
@@ -748,7 +784,7 @@ jQuery(document).ready(function ($) {
       });
   }
   function removeCoupon() {
-    /* ... (inchangé) ... */ if (state.isApplyingCoupon) return;
+    if (state.isApplyingCoupon) return;
     var ac = state.coupon.code;
     if (!ac) return;
     state.isApplyingCoupon = true;
@@ -756,27 +792,25 @@ jQuery(document).ready(function ($) {
     $couponMessages.hide().html('');
     setTimeout(function () {
       displayCouponMessage(messages.couponRemoved, 'notice');
+      state.coupon = { code: '', amount: 0, type: '' };
       resetCouponUIState(true);
       updateCheckoutPriceDisplay();
       state.isApplyingCoupon = false;
       setCouponLoadingState(false, true);
-      state.coupon = { code: '', amount: 0, type: '' };
     }, 200);
   }
   function resetCouponUIState(clearInput = true) {
-    /* ... (inchangé) ... */ if (clearInput) $couponInput.val('');
+    if (clearInput) $couponInput.val('');
     $appliedCouponInput.val('');
     $couponInput.prop('disabled', false);
     toggleCouponButtons(false);
   }
   function toggleCouponButtons(isApplied) {
-    /* ... (inchangé) ... */ $applyCouponButton
-      .toggle(!isApplied)
-      .prop('disabled', state.isApplyingCoupon);
+    $applyCouponButton.toggle(!isApplied).prop('disabled', state.isApplyingCoupon);
     $removeCouponButton.toggle(isApplied).prop('disabled', state.isApplyingCoupon);
   }
   function setCouponLoadingState(isLoading, isRemoving = false) {
-    /* ... (inchangé) ... */ var $b = isRemoving ? $removeCouponButton : $applyCouponButton;
+    var $b = isRemoving ? $removeCouponButton : $applyCouponButton;
     var $o = isRemoving ? $applyCouponButton : $removeCouponButton;
     var lt = isRemoving ? messages.removingBtn : messages.applyingBtn;
     var dt = isRemoving ? messages.removeBtn : messages.applyBtn;
@@ -787,14 +821,14 @@ jQuery(document).ready(function ($) {
 
   // --- Validation ---
   function isValidPhone(phone) {
-    /* ... (inchangé) ... */ if (!phone) return false;
+    if (!phone) return false;
     var d = (phone.match(/\d/g) || []).length;
     return /^[0-9\s\-\+\(\)]+$/.test(phone) && d >= 7;
   }
 
   // --- Analytics & Stats ---
   function trackPurchase(details) {
-    /* ... (inchangé) ... */ console.log('QCP Track Purchase:', details);
+    console.log('QCP Track Purchase:', details);
     if (!details) return;
     var qty = details.quantity || 1;
     if (typeof fbq !== 'undefined' && config.fb_pixel_id) {
@@ -836,14 +870,11 @@ jQuery(document).ready(function ($) {
     }
   }
 
-  // *** CHANGEMENT : Vérifie l'option 'enable_stats' avant l'envoi AJAX ***
   function trackStat(type, id) {
-    // Seulement envoyer la requête si les stats sont activées ET si l'ID produit est valide
     if (!enableStats || !id) {
       console.log('QCP Stat Tracking skipped (Disabled or Invalid ID). Type:', type, 'ID:', id);
       return;
     }
-
     console.log('QCP Track Stat Request Sent. Type:', type, 'ID:', id);
     $.ajax({
       type: 'POST',
