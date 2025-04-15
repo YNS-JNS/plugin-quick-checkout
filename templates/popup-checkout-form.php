@@ -1,7 +1,7 @@
 <?php
 /**
  * Template for the Quick Checkout Popup Form V1 (Modern UI/UX)
- * Version: 1.2.0 - Placeholders, New Required Indicator, UI Refinements.
+ * Version: 1.2.4 - Final Polish: Placeholders, RTL Input Dir, Required Indicator, UI Refinements.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -23,7 +23,6 @@ function qcp_get_required_markup_v4( $field_key, $requirements ) {
     $is_required = !empty($requirements[$field_key]);
     return [
         'required_attr' => $is_required ? 'required aria-required="true"' : '',
-        // *** CHANGEMENT : Utilise un span avec classe au lieu de abbr ***
         'required_label' => $is_required ? ' <span class="qcp-required-indicator">(' . esc_html__('required', 'quick-checkout-popup') . ')</span>' : '',
         'required_class' => $is_required ? 'validate-required' : '',
     ];
@@ -34,7 +33,7 @@ function qcp_get_required_markup_v4( $field_key, $requirements ) {
         <button type="button" class="qcp-popup-close" aria-label="<?php esc_attr_e('Close', 'quick-checkout-popup'); ?>">×</button>
         <h2 id="qcp-popup-main-title" class="qcp-popup-main-title screen-reader-text"><?php esc_html_e('Quick Checkout', 'quick-checkout-popup'); ?></h2>
 
-        <?php // Processing Overlay (inchangé) ?>
+        <?php // Processing Overlay ?>
         <div id="qcp-processing-overlay" class="qcp-processing-overlay" style="display: none;">
             <div class="qcp-processing-spinner-wrap">
                 <div class="qcp-spinner qcp-processing-spinner"></div>
@@ -42,33 +41,30 @@ function qcp_get_required_markup_v4( $field_key, $requirements ) {
             </div>
         </div>
 
-        <?php // Loading State (inchangé) ?>
+        <?php // Loading State ?>
         <div id="qcp-loading-view" class="qcp-popup-view qcp-loading-view" style="display: none;">
             <div class="qcp-loading-spinner-wrap"><div class="qcp-spinner qcp-loading-spinner"></div></div>
             <p><?php esc_html_e('Loading...', 'quick-checkout-popup'); ?></p>
         </div>
 
-        <?php // *** Variation Selection View (Structure identique, pas de "Add to Cart" WooCommerce standard) *** ?>
+        <?php // Variation Selection View ?>
         <div id="qcp-variation-view" class="qcp-popup-view qcp-variation-view" style="display: none;">
              <div class="qcp-popup-content">
                  <h3 class="qcp-view-title"><?php esc_html_e('Select Options', 'quick-checkout-popup'); ?></h3>
-                 <?php // Section pour afficher infos produit (image, nom, prix variable) ?>
                  <div class="qcp-section qcp-variation-product-section">
                      <div class="qcp-product-details">
                          <div class="qcp-product-image-wrap"><img src="<?php echo esc_url(wc_placeholder_img_src('woocommerce_single')); ?>" alt="" id="qcp-variation-product-image" class="qcp-product-image" /></div>
                          <div class="qcp-product-info">
                              <h4 id="qcp-variation-product-name" class="qcp-product-name"></h4>
-                             <div id="qcp-variation-product-price" class="qcp-product-price price"></div> <?php // Affichera la plage de prix ou le prix de la variation choisie ?>
+                             <div id="qcp-variation-product-price" class="qcp-product-price price"></div>
                              <p id="qcp-variation-stock-status" class="qcp-stock-status stock"></p>
                          </div>
                      </div>
                  </div>
-                 <?php // Conteneur où AJAX injectera les dropdowns de variations ?>
                  <div id="qcp-variation-options" class="qcp-variation-options variations">
                      <p class="qcp-variation-loading-text"><?php esc_html_e('Loading options...', 'quick-checkout-popup'); ?></p>
                  </div>
                  <div id="qcp-variation-messages" class="qcp-form-messages" style="display:none;"></div>
-                 <?php // Le bouton spécifique pour confirmer la sélection de variation ?>
                  <button type="button" class="button alt qcp-button qcp-select-variation-button" id="qcp-select-variation-button" disabled><?php esc_html_e('Select Variation', 'quick-checkout-popup'); ?></button>
              </div>
          </div>
@@ -80,7 +76,7 @@ function qcp_get_required_markup_v4( $field_key, $requirements ) {
 
                     <h3 class="qcp-view-title"><?php esc_html_e('Confirm Your Order', 'quick-checkout-popup'); ?></h3>
 
-                    <?php // Section Résumé Commande (Structure identique, styles CSS ajustés) ?>
+                    <?php // Section Résumé Commande ?>
                     <div class="qcp-section qcp-order-summary-section">
                         <h4 class="qcp-section-title screen-reader-text"><?php esc_html_e('Order Summary', 'quick-checkout-popup'); ?></h4>
                         <div class="qcp-order-item">
@@ -88,7 +84,6 @@ function qcp_get_required_markup_v4( $field_key, $requirements ) {
                              <div class="qcp-order-item-details">
                                  <div id="qcp-product-name" class="qcp-product-name"></div>
                                  <div class="qcp-product-meta">
-                                    <?php // Contrôle quantité : structure inchangée, styles ajustés ?>
                                     <div class="qcp-quantity-wrap quantity">
                                         <label for="qcp-quantity" class="screen-reader-text"><?php esc_html_e('Quantity', 'quick-checkout-popup'); ?></label>
                                         <button type="button" class="qcp-qty-btn qcp-qty-minus" aria-label="<?php esc_attr_e('Decrease quantity', 'quick-checkout-popup'); ?>">-</button>
@@ -99,21 +94,19 @@ function qcp_get_required_markup_v4( $field_key, $requirements ) {
                                  </div>
                              </div>
                         </div>
-                         <?php // Ligne coupon (inchangée) ?>
                          <?php if ($enable_coupons) : ?>
                          <div class="qcp-coupon-wrapper">
                              <div class="qcp-coupon-form"><label for="qcp-coupon-code" class="screen-reader-text"><?php esc_html_e('Coupon code', 'quick-checkout-popup'); ?></label><input type="text" name="coupon_code" class="input-text qcp-coupon-input" placeholder="<?php esc_attr_e('Coupon code', 'quick-checkout-popup'); ?>" id="qcp-coupon-code" value="" /><button type="button" class="button qcp-button qcp-apply-coupon-button" id="qcp-apply-coupon-button" name="apply_coupon"><span class="qcp-button-text"><?php esc_html_e('Apply', 'quick-checkout-popup'); ?></span><span class="qcp-spinner qcp-button-spinner" style="display: none;" aria-hidden="true"></span></button><button type="button" class="button qcp-button-alt qcp-remove-coupon-button" id="qcp-remove-coupon-button" name="remove_coupon" style="display:none;"><span class="qcp-button-text"><?php esc_html_e('Remove', 'quick-checkout-popup'); ?></span><span class="qcp-spinner qcp-button-spinner" style="display: none;" aria-hidden="true"></span></button></div>
                              <div id="qcp-coupon-messages" class="qcp-form-messages" style="display: none;"></div>
                          </div>
                          <?php endif; ?>
-                        <?php // Ligne TOTAL (inchangée) ?>
                         <div class="qcp-order-total-row">
                             <div id="qcp-order-total-label" class="qcp-order-total-label"><?php esc_html_e('Total', 'quick-checkout-popup'); ?></div>
                             <div id="qcp-order-total-value" class="qcp-order-total-value price"></div>
                         </div>
                     </div>
 
-                    <?php // Hidden inputs (inchangés) ?>
+                    <?php // Hidden inputs ?>
                     <?php wp_nonce_field( 'qcp_checkout_nonce', 'qcp_nonce_field' ); ?> <input type="hidden" id="qcp-product-id-input" name="product_id" value=""> <input type="hidden" id="qcp-variation-id-input" name="variation_id" value=""> <input type="hidden" id="qcp-applied-coupon-code" name="applied_coupon_code" value="">
 
                     <?php // Section Détails Livraison ?>
@@ -122,13 +115,14 @@ function qcp_get_required_markup_v4( $field_key, $requirements ) {
                         <div class="qcp-form-fields woocommerce-billing-fields">
                             <?php
                                 $fields_order = ['name', 'phone', 'city', 'address'];
+                                // Utilisation des traductions du plugin pour forcer (sauf Téléphone, plus standardisé par WC)
                                 $labels = [
                                     'name' => __('Full Name', 'quick-checkout-popup'),
                                     'phone' => __('Phone Number', 'woocommerce'),
                                     'city' => __('Town / City', 'quick-checkout-popup'),
                                     'address' => __('Street Address', 'quick-checkout-popup'),
                                 ];
-                                // *** PLACEHOLDERS AJOUTÉS ICI ***
+                                // Placeholders traduits via le domaine du plugin
                                 $placeholders = [
                                     'name' => __('Enter your full name', 'quick-checkout-popup'),
                                     'phone' => __('Enter your phone number', 'quick-checkout-popup'),
@@ -141,62 +135,49 @@ function qcp_get_required_markup_v4( $field_key, $requirements ) {
                                     'city' => 'address-level2',
                                     'address' => 'street-address'
                                 ];
+                                // Attribut dir pour RTL
+                                $direction_attr = is_rtl() ? 'dir="rtl"' : '';
                             ?>
                             <?php foreach ($fields_order as $key) :
-                                // *** Utilise la nouvelle fonction helper v4 ***
-                                $req = qcp_get_required_markup_v4($key, $field_requirements);
+                                $req = qcp_get_required_markup_v4($key, $field_requirements); // Utilise v4
                                 $field_id = 'qcp_billing_' . $key;
                                 $field_name = ($key === 'address') ? 'shipping_address_1' : 'billing_' . $key;
                                 $field_type = ($key === 'phone') ? 'tel' : (($key === 'address') ? 'textarea' : 'text');
                                 $autocomplete = $autocompletes[$key] ?? '';
-                                // *** Récupère le placeholder ***
                                 $placeholder = $placeholders[$key] ?? '';
-                                $current_value = $user_data[$key] ?? ''; // Valeur pré-remplie si existante
+                                $current_value = $user_data[$key] ?? '';
                             ?>
                                 <p class="form-row form-row-wide <?php echo esc_attr($req['required_class']); ?>" id="<?php echo esc_attr($field_id); ?>_field" data-priority="">
                                     <label for="<?php echo esc_attr($field_id); ?>">
                                         <?php echo esc_html($labels[$key]); ?>
-                                        <?php // *** Nouvel indicateur requis affiché *** ?>
-                                        <?php echo $req['required_label']; ?>
+                                        <?php echo $req['required_label']; // Affiche (requis) ?>
                                     </label>
                                     <span class="woocommerce-input-wrapper">
                                     <?php if ($field_type === 'textarea'): ?>
-                                        <?php // *** Ajout placeholder + valeur pour textarea *** ?>
-                                        <textarea class="input-text" name="<?php echo esc_attr($field_name); ?>" id="<?php echo esc_attr($field_id); ?>" rows="3" placeholder="<?php echo esc_attr($placeholder); ?>" autocomplete="<?php echo esc_attr($autocomplete); ?>" <?php echo $req['required_attr']; ?>><?php echo esc_textarea($current_value); ?></textarea>
+                                        <textarea <?php echo $direction_attr; ?> class="input-text" name="<?php echo esc_attr($field_name); ?>" id="<?php echo esc_attr($field_id); ?>" rows="3" placeholder="<?php echo esc_attr($placeholder); ?>" autocomplete="<?php echo esc_attr($autocomplete); ?>" <?php echo $req['required_attr']; ?>><?php echo esc_textarea($current_value); ?></textarea>
                                     <?php else: ?>
-                                         <?php // *** Ajout placeholder + valeur pour input *** ?>
-                                        <input type="<?php echo esc_attr($field_type); ?>" class="input-text" name="<?php echo esc_attr($field_name); ?>" id="<?php echo esc_attr($field_id); ?>" placeholder="<?php echo esc_attr($placeholder); ?>" autocomplete="<?php echo esc_attr($autocomplete); ?>" value="<?php echo esc_attr($current_value); ?>" <?php echo $req['required_attr']; ?>>
+                                        <input <?php echo $direction_attr; ?> type="<?php echo esc_attr($field_type); ?>" class="input-text" name="<?php echo esc_attr($field_name); ?>" id="<?php echo esc_attr($field_id); ?>" placeholder="<?php echo esc_attr($placeholder); ?>" autocomplete="<?php echo esc_attr($autocomplete); ?>" value="<?php echo esc_attr($current_value); ?>" <?php echo $req['required_attr']; ?>>
                                     <?php endif; ?>
                                     </span>
-                                    <?php // Message d'erreur (pas de changement structurel) ?>
                                     <span class="qcp-field-error-message" role="alert" aria-live="polite"></span>
                                 </p>
                             <?php endforeach; ?>
                         </div>
                     </div>
 
-                    <?php // Info Box (inchangée) ?>
+                    <?php // Info Box ?>
                     <div class="qcp-section qcp-info-section">
                          <div class="qcp-info-box">
-                             <div class="qcp-info-item">
-                                 <span class="qcp-info-icon">🚚</span>
-                                 <span class="qcp-info-text"><?php esc_html_e('Fast Delivery available', 'quick-checkout-popup'); ?></span>
-                             </div>
-                             <div class="qcp-info-item">
-                                 <span class="qcp-info-icon">💵</span>
-                                 <span class="qcp-info-text"><?php esc_html_e('Payment upon receipt', 'quick-checkout-popup'); ?></span>
-                             </div>
-                             <div class="qcp-info-item">
-                                 <span class="qcp-info-icon">🔒</span>
-                                 <span class="qcp-info-text"><?php esc_html_e('Secure Checkout', 'quick-checkout-popup'); ?></span>
-                             </div>
+                             <div class="qcp-info-item"> <span class="qcp-info-icon">🚚</span> <span class="qcp-info-text"><?php esc_html_e('Fast Delivery available', 'quick-checkout-popup'); ?></span> </div>
+                             <div class="qcp-info-item"> <span class="qcp-info-icon">💵</span> <span class="qcp-info-text"><?php esc_html_e('Payment upon receipt', 'quick-checkout-popup'); ?></span> </div>
+                             <div class="qcp-info-item"> <span class="qcp-info-icon">🔒</span> <span class="qcp-info-text"><?php esc_html_e('Secure Checkout', 'quick-checkout-popup'); ?></span> </div>
                          </div>
                     </div>
 
-                    <?php // Global errors (inchangé) ?>
+                    <?php // Global errors ?>
                     <div id="qcp-form-errors" class="qcp-form-messages qcp-global-errors" role="alert" style="display: none;"></div>
 
-                     <?php // Submit section (inchangé) ?>
+                    <?php // Submit section ?>
                     <div class="qcp-submit-section">
                         <button type="submit" class="button alt qcp-button qcp-submit-button" id="qcp-submit-button" name="qcp_submit" value="<?php echo esc_attr($submit_button_base); ?>">
                             <span class="qcp-button-text"><?php echo esc_html($submit_button_base); ?></span>
@@ -209,12 +190,10 @@ function qcp_get_required_markup_v4( $field_key, $requirements ) {
 
         <?php // Success View ?>
         <div id="qcp-success-view" class="qcp-popup-view qcp-success-view" style="display: none;">
-             <?php // Contenu centré par CSS via qcp-success-view ?>
              <div class="qcp-popup-content qcp-success-content">
                  <div class="qcp-success-icon-wrap"><svg class="qcp-success-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="qcp-success-icon--circle" cx="26" cy="26" r="25" fill="none"/><path class="qcp-success-icon--check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg></div>
                  <h3 class="qcp-success-title"><?php echo esc_html($success_title); ?></h3>
                  <div id="qcp-success-message" class="qcp-success-text"><?php echo wp_kses_post($success_message); ?></div>
-                 <?php // *** Bouton centré et stylé via CSS *** ?>
                  <button type="button" class="button qcp-button qcp-popup-close qcp-success-close-button"><?php esc_html_e('Continue Shopping', 'quick-checkout-popup'); ?></button>
              </div>
         </div>

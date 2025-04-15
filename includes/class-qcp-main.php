@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Main Plugin Class V1 - With Advanced Features.
+ * Main Plugin Class V1.3.0 - Added MAD currency symbol filter.
  */
 final class QCP_Main {
 
@@ -17,7 +17,7 @@ final class QCP_Main {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
             self::$_instance->includes();
-            self::$_instance->hooks();
+            self::$_instance->hooks(); // Assure-toi que hooks est appelé après includes
         }
         return self::$_instance;
     }
@@ -28,27 +28,46 @@ final class QCP_Main {
         require_once QCP_PLUGIN_DIR . 'includes/class-qcp-admin.php';
         require_once QCP_PLUGIN_DIR . 'includes/class-qcp-order.php';
 
-        // Optional includes based on settings
-        $options = get_option('qcp_settings', []); // Retrieve options once
+        $options = get_option('qcp_settings', []);
 
-        // Google Sheets
         if (!empty($options['enable_google_sheets']) && file_exists(QCP_PLUGIN_DIR . 'includes/class-qcp-sheets.php')) {
             require_once QCP_PLUGIN_DIR . 'includes/class-qcp-sheets.php';
         }
 
-        // Statistics
         if ( !empty($options['enable_stats']) && file_exists(QCP_PLUGIN_DIR . 'includes/class-qcp-stats.php')) {
             require_once QCP_PLUGIN_DIR . 'includes/class-qcp-stats.php';
         }
     }
 
     private function hooks() {
+        // Instancier les classes principales
         QCP_Frontend::instance();
-        QCP_Ajax::instance(); // Handles all AJAX now
+        QCP_Ajax::instance();
         QCP_Admin::instance();
-        // Other classes instantiated/used statically by Ajax/Frontend
+        // Les autres classes sont typiquement instanciées ou utilisées statiquement au besoin par Ajax/Frontend
 
+        // Actions et Filtres Généraux
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
+
+        // *** AJOUT DU FILTRE POUR LE SYMBOLE MAD ***
+        add_filter( 'woocommerce_currency_symbol', array( $this, 'qcp_change_mad_currency_symbol'), 99, 2 );
+    }
+
+    /**
+     * Change MAD currency symbol to 'dh'.
+     *
+     * @param string $currency_symbol The default currency symbol.
+     * @param string $currency        The currency code.
+     * @return string The modified currency symbol.
+     */
+    public function qcp_change_mad_currency_symbol( $currency_symbol, $currency ) {
+        if ( $currency === 'MAD' ) {
+             // Vérifie si le symbole n'est pas déjà 'dh' pour éviter des boucles si une autre fonction le fait déjà
+             if ($currency_symbol !== 'dh') {
+                return 'dh';
+             }
+        }
+        return $currency_symbol; // Retourne le symbole original pour les autres devises
     }
 
     public function enqueue_frontend_assets() {
@@ -62,28 +81,38 @@ final class QCP_Main {
         {
             $css_file_path = QCP_PLUGIN_DIR . 'assets/css/frontend.css';
             $js_file_path = QCP_PLUGIN_DIR . 'assets/js/frontend.js';
-            $css_version = QCP_VERSION . '.' . (file_exists($css_file_path) ? filemtime($css_file_path) : '0');
-            $js_version = QCP_VERSION . '.' . (file_exists($js_file_path) ? filemtime($js_file_path) : '0');
+            // Utilise la constante QCP_VERSION si elle est définie et à jour, sinon fallback
+            $version = defined('QCP_VERSION') ? QCP_VERSION : '1.2.4'; // Assure-toi que QCP_VERSION est défini dans quick-checkout-popup.php
+            $css_version = $version . '.' . (file_exists($css_file_path) ? filemtime($css_file_path) : '0');
+            $js_version = $version . '.' . (file_exists($js_file_path) ? filemtime($js_file_path) : '0');
 
             wp_enqueue_style('qcp-frontend-style', QCP_PLUGIN_URL . 'assets/css/frontend.css', [], $css_version);
-            // *** AJOUT DÉPENDANCE 'wc-price-format' pour accounting.js ***
+            // Ajout dépendance accounting via wc-price-format
             wp_enqueue_script('qcp-frontend-script', QCP_PLUGIN_URL . 'assets/js/frontend.js', ['jquery', 'wc-price-format'], $js_version, true);
 
             // --- Prepare Data for JS ---
+            // Récupère les paramètres de formatage WooCommerce
+            $currency_pos = get_option( 'woocommerce_currency_pos' );
+            $thousand_separator = wc_get_price_thousand_separator();
+            $decimal_separator = wc_get_price_decimal_separator();
+            $decimals = wc_get_price_decimals();
+            // Important: Appelle get_woocommerce_currency_symbol() APRÈS que notre filtre soit ajouté !
+            $currency_symbol = get_woocommerce_currency_symbol();
+
             $price_format_params = [
-                 'currency_symbol'    => get_woocommerce_currency_symbol(),
-                 'currency_pos'       => get_option( 'woocommerce_currency_pos' ),
-                 'thousand_separator' => wc_get_price_thousand_separator(),
-                 'decimal_separator'  => wc_get_price_decimal_separator(),
-                 'decimals'           => wc_get_price_decimals(),
+                 'currency_symbol'    => $currency_symbol, // Utilise le symbole potentiellement filtré
+                 'currency_pos'       => $currency_pos,
+                 'thousand_separator' => $thousand_separator,
+                 'decimal_separator'  => $decimal_separator,
+                 'decimals'           => $decimals,
              ];
 
-            // *** AJOUTS ICI pour UX ***
-            $submit_button_base = __('Place Order', 'quick-checkout-popup'); // Texte de base pour le bouton
+            $submit_button_base = __('Place Order', 'quick-checkout-popup'); // Traduction
+            $total_label = __('Total', 'quick-checkout-popup'); // Traduction
 
             wp_localize_script( 'qcp-frontend-script', 'qcp_params', array(
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
-                'nonce'    => wp_create_nonce( 'qcp_checkout_nonce' ), // Used for checkout, stats, coupon, variation ajax
+                'nonce'    => wp_create_nonce( 'qcp_checkout_nonce' ),
                 'thank_you_message' => $options['thank_you_message'] ?? __( 'Thank you for your order! We will contact you shortly.', 'quick-checkout-popup' ),
                 'validation_messages' => [
                     'required'           => __( 'This field is required.', 'quick-checkout-popup' ),
@@ -105,21 +134,20 @@ final class QCP_Main {
                      'select_options'   => __('Please select product options.', 'quick-checkout-popup'),
                      'unavailable'      => __('Sorry, this combination is unavailable.', 'quick-checkout-popup'),
                      'out_of_stock'     => __('Sorry, this combination is out of stock.', 'quick-checkout-popup'),
-                     'adding_options'   => __('Loading options...', 'quick-checkout-popup'), // Placeholder text
-                     'options_loaded'   => __('Options loaded.', 'quick-checkout-popup'), // Placeholder text
-                     'select_variation' => __('Select Variation', 'quick-checkout-popup'), // Button text
-                     'variation_selected' => __('Proceed to Checkout', 'quick-checkout-popup'), // Button text
+                     'adding_options'   => __('Loading options...', 'quick-checkout-popup'),
+                     'options_loaded'   => __('Options loaded.', 'quick-checkout-popup'),
+                     'select_variation' => __('Select Variation', 'quick-checkout-popup'),
+                     'variation_selected' => __('Proceed to Checkout', 'quick-checkout-popup'),
                 ],
-                'placeholder_image_url' => function_exists('wc_placeholder_img_src') ? wc_placeholder_img_src('woocommerce_single') : '', // Use larger placeholder
+                'placeholder_image_url' => function_exists('wc_placeholder_img_src') ? wc_placeholder_img_src('woocommerce_single') : '',
                 'ga_id'                 => $options['ga_id'] ?? '',
                 'fb_pixel_id'           => $options['fb_pixel_id'] ?? '',
-                'price_format'          => $price_format_params,
-                'enable_coupons'        => apply_filters('qcp_enable_coupons', true), // Filter to easily disable coupons
-                'enable_variations'     => apply_filters('qcp_enable_variations', true), // Filter to easily disable variations
+                'price_format'          => $price_format_params, // Contient le symbole potentiellement modifié
+                'enable_coupons'        => apply_filters('qcp_enable_coupons', true) && wc_coupons_enabled(),
+                'enable_variations'     => apply_filters('qcp_enable_variations', true),
                 'enable_stats'          => !empty($options['enable_stats']),
-                // *** NOUVEAUX AJOUTS POUR UX ***
-                'submit_button_text_base' => $submit_button_base,
-                'total_label'             => __('Total', 'quick-checkout-popup'), // Label pour le Total
+                'submit_button_text_base' => $submit_button_base, // Texte de base
+                'total_label'           => $total_label,           // Label Total
             ) );
         }
     }

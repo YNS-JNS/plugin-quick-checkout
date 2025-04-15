@@ -1,6 +1,6 @@
 /**
  * Quick Checkout Popup Frontend Styles V1 (Modern UI/UX)
- * Version: 1.2.2 - Hide WC elements in Variation View.
+ * Version: 1.2.4 - Final Polish: RTL Placeholder CSS Assist, Centered Success Button.
  */
 
 /* --- Base Variables --- */
@@ -26,7 +26,7 @@
   --qcp-input-focus-border: var(--qcp-primary-color);
   --qcp-input-focus-shadow: 0 0 0 1px var(--qcp-primary-color);
   --qcp-section-bg: #f6f7f7;
-  --qcp-required-color: #c9356e; /* Un rose/rouge doux pour l'indicateur */
+  --qcp-required-color: #c9356e;
 }
 
 /* --- General & Base --- */
@@ -147,7 +147,6 @@
   flex-grow: 1;
 }
 .qcp-loading-spinner-wrap .qcp-spinner {
-  /* Spinner already centered */
 }
 .qcp-loading-view p {
   color: var(--qcp-text-light);
@@ -273,7 +272,7 @@
   color: var(--qcp-primary-color);
 }
 
-/* --- *** REDESIGN VARIATION VIEW *** --- */
+/* --- Variation View --- */
 .qcp-variation-view .qcp-view-title {
   margin-bottom: 20px;
 }
@@ -308,6 +307,16 @@
   color: var(--qcp-primary-color);
   min-height: 1.3em;
 }
+.qcp-variation-product-section .qcp-product-price del {
+  color: var(--qcp-text-light);
+  font-weight: normal;
+  opacity: 0.8;
+  margin-right: 5px;
+  margin-left: 0;
+}
+.qcp-variation-product-section .qcp-product-price ins {
+  text-decoration: none;
+}
 .qcp-stock-status {
   font-size: 0.9em;
   margin-top: 8px;
@@ -320,27 +329,18 @@
 .qcp-stock-status.out-of-stock {
   color: var(--qcp-error-color);
 }
-/* Variation Price inherit styles */
-.qcp-variation-product-section .qcp-product-price del {
-  color: var(--qcp-text-light);
-  font-weight: normal;
-  opacity: 0.8;
-  margin-right: 5px;
-  margin-left: 0;
-}
-.qcp-variation-product-section .qcp-product-price ins {
-  text-decoration: none;
-}
-
-/* Container pour les options injectées */
 #qcp-variation-options {
   margin-top: 20px;
   margin-bottom: 25px;
+}
+#qcp-variation-options .variations_form {
 }
 #qcp-variation-options .variations {
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+#qcp-variation-options .variation {
 }
 #qcp-variation-options table {
   width: 100%;
@@ -415,18 +415,14 @@
   margin-top: 15px;
   margin-bottom: 0;
 }
-
-/* *** AJOUT : Masquer Quantité et Bouton Add-to-Cart DANS la vue de variation *** */
-#qcp-variation-options .quantity, /* Cible le conteneur quantité */
+#qcp-variation-options .quantity,
 #qcp-variation-options .single_add_to_cart_button {
-  /* Cible le bouton ATC standard */
-  display: none !important; /* Utilise !important pour forcer si conflit */
+  display: none !important;
   visibility: hidden !important;
 }
 
 /* --- Quantity Input (Checkout View) --- */
 .qcp-product-meta .qcp-quantity-wrap.quantity {
-  /* Styles spécifiques si besoin ici */
 }
 .qcp-product-meta .qcp-quantity-wrap .qcp-qty-btn {
   background-color: transparent;
@@ -835,7 +831,7 @@ textarea.qcp-input-error + .qcp-field-error-message {
 }
 .qcp-success-close-button {
   display: inline-block;
-  margin: 20px auto 0 auto;
+  margin: 20px 0 0 0;
   background-color: #f0f0f1;
   border-color: var(--qcp-border-color);
   color: var(--qcp-text-color);
@@ -1090,7 +1086,7 @@ body.rtl .qcp-coupon-form {
 body.rtl .qcp-variation-product-section .qcp-product-details {
   flex-direction: row-reverse;
 }
-body.rtl .qcp-product-price del {
+body.rtl .qcp-variation-product-section .qcp-product-price del {
   margin-right: 0;
   margin-left: 5px;
 }
@@ -1127,6 +1123,11 @@ body.rtl .qcp-form-fields .input-text,
 body.rtl .qcp-form-fields textarea.input-text {
   padding-left: 12px;
   padding-right: 12px;
+}
+/* Placeholder RTL assist */
+body.rtl .qcp-form-fields .input-text::placeholder,
+body.rtl .qcp-form-fields textarea.input-text::placeholder {
+  text-align: right;
 }
 body.rtl .qcp-global-errors ul {
   border-left-width: 0;
